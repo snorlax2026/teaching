@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Space Kids 3 單字發音練習</title>
+<style>
+  :root{
+    --mint:#bdeee0;
+    --sky:#bfe3f7;
+    --butter:#ffe9a8;
+    --peach:#ffd6c9;
+    --pink:#ffd0e0;
+    --ink:#3d3350;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Comic Sans MS","Segoe UI Rounded","Chalkboard SE","Arial Rounded MT Bold",sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, var(--mint) 0%, transparent 40%),
+      radial-gradient(circle at 90% 20%, var(--sky) 0%, transparent 40%),
+      radial-gradient(circle at 20% 90%, var(--peach) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, var(--pink) 0%, transparent 40%),
+      #fdf9f0;
+    color:var(--ink);
+    min-height:100vh;
+    padding-bottom:40px;
+  }
+  header{
+    text-align:center;
+    padding:28px 16px 14px;
+  }
+  header h1{
+    font-size:clamp(24px,5vw,38px);
+    margin:0;
+    color:#6b4f8f;
+    text-shadow: 2px 2px 0 #fff, -1px -1px 0 #fff;
+  }
+  header p{
+    margin:8px 0 0;
+    font-size:15px;
+    color:#7a6a92;
+  }
+  .controls{
+    max-width:900px;
+    margin:14px auto;
+    padding:14px 18px;
+    background:var(--card);
+    border-radius:20px;
+    box-shadow:0 6px 0 rgba(0,0,0,0.06);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+    justify-content:center;
+  }
+  .controls label{
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  select, input[type=range]{
+    font-size:14px;
+    padding:6px 10px;
+    border-radius:12px;
+    border:2px solid #e0d5f0;
+    background:#faf7ff;
+  }
+  .unit-nav{
+    max-width:1000px;
+    margin:0 auto 10px;
+    padding:0 16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+  }
+  .unit-btn{
+    border:none;
+    padding:8px 14px;
+    border-radius:999px;
+    background:#fff;
+    color:#6b4f8f;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 3px 0 #d9c9f0;
+    font-size:13px;
+    transition:transform .1s;
+  }
+  .unit-btn:hover{transform:translateY(-2px);}
+  .unit-btn.active{
+    background:#a68cd9;
+    color:#fff;
+    box-shadow:0 3px 0 #7c5fb0;
+  }
+  main{
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 16px;
+  }
+  .unit-section{
+    display:none;
+    margin-bottom:30px;
+  }
+  .unit-section.show{ display:block; }
+  .unit-title-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:linear-gradient(90deg,var(--sky),var(--mint));
+    padding:12px 20px;
+    border-radius:18px;
+    margin-bottom:16px;
+    box-shadow:0 5px 0 rgba(0,0,0,0.05);
+  }
+  .unit-title-bar h2{
+    margin:0;
+    font-size:22px;
+    color:#3d3350;
+  }
+  .play-all-btn{
+    background:#fff;
+    border:none;
+    padding:8px 16px;
+    border-radius:999px;
+    font-weight:bold;
+    color:#4f8f6b;
+    cursor:pointer;
+    box-shadow:0 3px 0 #cdeee0;
+    font-size:13px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:14px;
+  }
+  .word-card{
+    background:var(--card);
+    border-radius:18px;
+    padding:16px 10px;
+    text-align:center;
+    cursor:pointer;
+    box-shadow:0 5px 0 #eee2f7;
+    border:3px solid transparent;
+    transition:transform .12s, box-shadow .12s;
+    user-select:none;
+  }
+  .word-card:hover{
+    transform:translateY(-3px);
+    border-color:#d9c9f0;
+  }
+  .word-card:active, .word-card.playing{
+    transform:translateY(2px) scale(0.97);
+    box-shadow:0 2px 0 #eee2f7;
+    border-color:#a68cd9;
+    background:#f3ecff;
+  }
+  .speaker{
+    font-size:22px;
+    display:block;
+    margin-bottom:4px;
+  }
+  .eng{
+    font-size:19px;
+    font-weight:bold;
+    color:#4a3b66;
+    display:block;
+  }
+  .chi{
+    font-size:15px;
+    color:#8a7aa8;
+    display:block;
+    margin-top:2px;
+  }
+  footer{
+    text-align:center;
+    color:#a898c0;
+    font-size:12px;
+    margin-top:20px;
+  }
+  .toast{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:#6b4f8f;
+    color:#fff;
+    padding:10px 20px;
+    border-radius:999px;
+    font-size:14px;
+    opacity:0;
+    transition:opacity .3s, transform .3s;
+    pointer-events:none;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🚀 Grammar Space Kids 3 單字發音練習</h1>
+  <p>點一下單字卡，就可以聽到清楚的英文發音！ Units 01–20</p>
+</header>
+
+<div class="controls">
+  <label>🔊 發音速度：
+    <input type="range" id="rateSlider" min="0.5" max="1.1" step="0.05" value="0.75">
+    <span id="rateValue">0.75x</span>
+  </label>
+  <label>🗣️ 語音：
+    <select id="voiceSelect"></select>
+  </label>
+</div>
+
+<div class="unit-nav" id="unitNav"></div>
+
+<main id="main"></main>
+
+<div class="toast" id="toast">🔈 播放中...</div>
+
+<footer>點擊單字卡聆聽發音・適合課堂投影與居家練習使用</footer>
+
+<script>
+const units = [
+{n:1, words:[
+  ["Apple","蘋果"],["Banana","香蕉"],["Cookie","餅乾"],["Egg","蛋"],
+  ["Hamburger","漢堡"],["Onion","洋蔥"],["Ant","螞蟻"],["Elephant","大象"],
+  ["Bread","麵包"],["Cheese","起司"],["Milk","牛奶"],["Water","水"]
+]},
+{n:2, words:[
+  ["Strawberry","草莓"],["Peach","桃子"],["Orange","橘子"],["Sandwich","三明治"],
+  ["Pizza","披薩"],["Soup","湯"],["Salt","鹽巴"],["Butter","奶油"],["Sugar","糖"],["Jam","果醬"],
+  ["Juice","果汁"],["Cup","杯子"],["Dish","盤子"],["Spoon","湯匙"]
+]},
+{n:3, words:[
+  ["Doctor","醫生"],["Scientist","科學家"],["Magician","魔術師"],["Singer","歌手"],
+  ["Firefighter","消防員"],["Actor","演員"],["Superhero","超級英雄"],["Full","飽的"],
+  ["Hungry","餓的"],["Tall","高的"],["Short","矮的"],["Strong","強壯的"]
+]},
+{n:4, words:[
+  ["Teacher","老師"],["Nurse","護士"],["Police officer","警察"],["Cook","廚師"],
+  ["Dancer","舞者"],["Farmer","農夫"],["Baby","嬰兒"],["Child","小孩"],
+  ["Lion","獅子"],["Tiger","老虎"],
+  ["Monkey","猴子"],["Sad","傷心的"],["Hot","熱的"],["Cold","冷的"]
+]},
+{n:5, words:[
+  ["Walk","走路"],["Wash","洗"],["Watch","觀看"],["Live","居住"],
+  ["Play","玩"],["Read","閱讀"],["Speak","說話"],["Study","讀書"],
+  ["Dog","狗"],["Turtle","烏龜"],["Bird","鳥"],["Cow","牛"]
+]},
+{n:6, words:[
+  ["Get up","起床"],["Go to bed","睡覺"],["Have breakfast","吃早餐"],
+  ["Have lunch","午餐"],["Have dinner","晚餐"],["Do homework","寫作業"],
+  ["Eat","吃"],["Drink","喝"],["Swim","游泳"],["Dance","跳舞"]
+]},
+{n:7, words:[
+  ["Early","早地"],["Late","晚地"],["Fast","快地"],["Slowly","慢地"],
+  ["Loudly","大聲地"],["Quietly","安靜地"],["Happily","快樂地"],["Well","好地"]
+]},
+{n:8, words:[
+  ["Brush","刷"],["Cry","哭泣"],["Horse","馬"],["Pig","豬"],["Giraffe","長頸鹿"],
+  ["Hippo","河馬"],["Rabbit","兔子"],["Zebra","斑馬"],["Octopus","章魚"]
+]},
+{n:9, words:[
+  ["Open","打開"],["Close","關閉"],["Stand up","起立"],["Sit down","坐下"],
+  ["Draw","畫畫"],["Touch","觸碰"],["Listen","聽"],["Run","跑"],
+  ["Museum","博物館"],["Library","圖書館"],["Hallway","走廊"]
+]},
+{n:10, words:[
+  ["Smiling","微笑中"],["Reading","閱讀中"],["Talking","說話中"],["Eating","吃中"],
+  ["Writing","寫中"],["Dancing","跳舞中"],["Running","跑中"],["Sitting","坐中"],
+  ["Swimming","游泳中"],["Making cookies","做餅乾中"]
+]},
+{n:11, words:[
+  ["Sleeping","睡覺中"],["Walking","走路中"],["Studying","讀書中"],
+  ["Jumping","跳躍中"],["Driving","開車中"],["Washing","洗中"],
+  ["Watching TV","看電視中"],["Riding a bike","騎車中"],["Flying a kite","放風箏中"]
+]},
+{n:12, words:[
+  ["Buy","買"],["Catch","接"],["Take","拿"],["Use","使用"],
+  ["Movie ticket","電影票"],["3-D glasses","3D眼鏡"],["Cake","蛋糕"],["Ice cream","冰淇淋"]
+]},
+{n:13, words:[
+  ["Bakery","麵包店"],["Gym","體育館"],["Home","家"],["Hospital","醫院"],
+  ["Mall","購物中心"],["Park","公園"],["Playground","遊樂場"],["Restaurant","餐廳"],
+  ["School","學校"],["Supermarket","超市"],["Zoo","動物園"]
+]},
+{n:14, words:[
+  ["Baked","烤了"],["Closed","關了"],["Cooked","煮了"],["Cried","哭了"],
+  ["Danced","跳舞了"],["Liked","喜歡"],["Listened","聽了"],["Played","玩了"],
+  ["Studied","讀了"],["Tried","嘗試了"],["Walked","走了"],["Washed","洗了"],["Watched","看了"]
+]},
+{n:15, words:[
+  ["Ate","吃過"],["Came","來過"],["Did","做過"],["Drank","喝過"],
+  ["Had","有過"],["Made","做過"],["Read","讀過"],["Saw","看過"],["Went","去過"]
+]},
+{n:16, words:[
+  ["Yesterday","昨天"],["Last night","昨晚"],["Last Sunday","上週日"],
+  ["Sandcastle","沙堡"],["Radio","收音機"]
+]},
+{n:17, words:[
+  ["Clean","打掃"],["Eat","吃"],["Go","去"],["Do","做"],
+  ["Come","來"],["Have","有"],["See","看"],["Make","製造"],["Drink","喝"]
+]},
+{n:18, words:[
+  ["Tomorrow","明天"],["This Friday","這週五"],["This Sunday","這週日"],
+  ["Next","下個"],["Busy","忙碌的"],["Sick","生病的"],["Party","派對"]
+]},
+{n:19, words:[
+  ["Go camping","去露營"],["Go fishing","去釣魚"],["Go hiking","去健行"],
+  ["Go shopping","去購物"],["Go skiing","去滑雪"],["Go swimming","去游泳"]
+]},
+{n:20, words:[
+  ["Schedule","行程表"],["To-do list","待辦清單"],["Play the piano","彈鋼琴"],
+  ["Play the violin","拉小提琴"],["Clean the room","打掃房間"],["Wash the dog","洗狗"]
+]}
+];
+
+let voices = [];
+let selectedVoice = null;
+
+function loadVoices(){
+  voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith("en"));
+  const sel = document.getElementById("voiceSelect");
+  sel.innerHTML = "";
+  if(voices.length === 0){
+    const opt = document.createElement("option");
+    opt.textContent = "系統預設語音";
+    sel.appendChild(opt);
+    return;
+  }
+  voices.forEach((v,i)=>{
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = v.name + " (" + v.lang + ")";
+    sel.appendChild(opt);
+  });
+  // 優先選擇美式或英式清楚發音
+  let preferredIndex = voices.findIndex(v => /en-US|en-GB/.test(v.lang) && /female|Samantha|Google/i.test(v.name));
+  if(preferredIndex === -1) preferredIndex = voices.findIndex(v => v.lang === "en-US");
+  if(preferredIndex === -1) preferredIndex = 0;
+  sel.value = preferredIndex;
+  selectedVoice = voices[preferredIndex];
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+document.getElementById("voiceSelect").addEventListener("change", (e)=>{
+  selectedVoice = voices[e.target.value];
+});
+
+const rateSlider = document.getElementById("rateSlider");
+const rateValue = document.getElementById("rateValue");
+rateSlider.addEventListener("input", ()=>{
+  rateValue.textContent = rateSlider.value + "x";
+});
+
+function showToast(text){
+  const t = document.getElementById("toast");
+  t.textContent = text;
+  t.classList.add("show");
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(()=> t.classList.remove("show"), 1200);
+}
+
+function speak(word, cardEl){
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(word);
+  utter.lang = "en-US";
+  utter.rate = parseFloat(rateSlider.value);
+  utter.pitch = 1.05;
+  if(selectedVoice) utter.voice = selectedVoice;
+  if(cardEl){
+    cardEl.classList.add("playing");
+    utter.onend = ()=> cardEl.classList.remove("playing");
+  }
+  showToast("🔈 " + word);
+  speechSynthesis.speak(utter);
+}
+
+// 建立導覽按鈕與各單元區塊
+const nav = document.getElementById("unitNav");
+const main = document.getElementById("main");
+
+units.forEach((unit, idx)=>{
+  const btn = document.createElement("button");
+  btn.className = "unit-btn" + (idx===0 ? " active" : "");
+  btn.textContent = "Unit " + String(unit.n).padStart(2,"0");
+  btn.onclick = ()=> showUnit(unit.n);
+  nav.appendChild(btn);
+
+  const section = document.createElement("section");
+  section.className = "unit-section" + (idx===0 ? " show" : "");
+  section.id = "unit-" + unit.n;
+
+  const bar = document.createElement("div");
+  bar.className = "unit-title-bar";
+  bar.innerHTML = `<h2>📘 Unit ${String(unit.n).padStart(2,"0")}</h2>`;
+  const playAllBtn = document.createElement("button");
+  playAllBtn.className = "play-all-btn";
+  playAllBtn.textContent = "▶ 全部播放";
+  playAllBtn.onclick = ()=> playAll(unit);
+  bar.appendChild(playAllBtn);
+  section.appendChild(bar);
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  unit.words.forEach(([eng, chi])=>{
+    const card = document.createElement("div");
+    card.className = "word-card";
+    card.innerHTML = `<span class="speaker">🔊</span><span class="eng">${eng}</span><span class="chi">${chi}</span>`;
+    card.onclick = ()=> speak(eng, card);
+    grid.appendChild(card);
+  });
+  section.appendChild(grid);
+  main.appendChild(section);
+});
+
+function showUnit(n){
+  document.querySelectorAll(".unit-section").forEach(s=> s.classList.remove("show"));
+  document.getElementById("unit-"+n).classList.add("show");
+  document.querySelectorAll(".unit-btn").forEach(b=>{
+    b.classList.toggle("active", b.textContent === "Unit " + String(n).padStart(2,"0"));
+  });
+  window.scrollTo({top: main.offsetTop - 20, behavior:"smooth"});
+}
+
+function playAll(unit){
+  speechSynthesis.cancel();
+  let i = 0;
+  const cards = document.querySelectorAll("#unit-" + unit.n + " .word-card");
+  function next(){
+    if(i >= unit.words.length) return;
+    const [eng] = unit.words[i];
+    const utter = new SpeechSynthesisUtterance(eng);
+    utter.lang = "en-US";
+    utter.rate = parseFloat(rateSlider.value);
+    utter.pitch = 1.05;
+    if(selectedVoice) utter.voice = selectedVoice;
+    cards[i].classList.add("playing");
+    utter.onend = ()=>{
+      cards[i].classList.remove("playing");
+      i++;
+      setTimeout(next, 250);
+    };
+    showToast("🔈 " + eng);
+    speechSynthesis.speak(utter);
+  }
+  next();
+}
+</script>
+
+</body>
+</html>
