@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = """<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -83,12 +83,15 @@
         <li>多元授課模式：提供高雄在地實體小班制課程，亦有開設 Google Meet 線上視訊課。</li>
     </ul>
 
-    <div class="section-title">🚀 線上互動教材（點擊開始練習）</div>
+    <div class="section-title">🚀 線上練習教材</div>
     <div class="btn-group">
-        <a class="btn" href="Grammar_Space_Kids_3_發音練習.html">📖 Lesson 1: Grammar Space Kids 3 發音練習</a>
-        <button class="btn" onclick="alert('教材準備中，敬請期待！')">🎨 Lesson 2: 節慶主題手作英文（準備中）</button>
+        <a class="btn" href="Grammar_Space_Kids_3_nancy.html">💻 文法書單字 Grammar Space Kids 3 發音練習</a>
     </div>
 </div>
 
 </body>
-</html>
+</html>"""
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+print("Updated index.html generated successfully.")
