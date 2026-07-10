@@ -21,28 +21,34 @@
             padding: 15px;
         }
         h1 {
-            font-size: 22px;
+            font-size: 20px;
             text-align: center;
-            margin: 0 0 15px 0;
+            margin: 0 0 10px 0;
         }
-        /* 頁數快速切換選單（點擊即可切換） */
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
+        /* 56頁方格切換選單，極致節省垂直空間 */
+        .page-selector-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+        }
+        .tabs-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
             margin-bottom: 15px;
             border-bottom: 2px solid #000000;
             padding-bottom: 10px;
         }
         .tab-btn {
-            padding: 6px 12px;
+            padding: 5px 0;
             border: 1px solid #000000;
             background-color: #ffffff;
             color: #000000;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 4px;
+            text-align: center;
         }
         .tab-btn.active {
             background-color: #000000;
@@ -51,16 +57,16 @@
         .word-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
-        /* 直覺式單字卡，極致縮小垂直高度 */
+        /* 直覺式單字卡，極致縮小垂直高度，單倍行距 */
         .word-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px;
-            border: 2px solid #000000;
-            border-radius: 12px;
+            padding: 8px 12px;
+            border: 1px solid #000000;
+            border-radius: 8px;
             background-color: #ffffff;
             cursor: pointer;
         }
@@ -69,7 +75,7 @@
             color: #ffffff;
         }
         .english-part {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
         }
         .spell-part {
@@ -83,7 +89,7 @@
             color: #cccccc;
         }
         .chinese-part {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
         }
     </style>
@@ -93,87 +99,64 @@
 <div class="container">
     <h1>角落小夥伴 國小必背300字互動卡 🧸</h1>
     
-    <!-- 頁數分組切換選單 -->
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchPage('p1')">P1~P5 代名詞</button>
-        <button class="tab-btn" onclick="switchPage('p6')">P6~P10 數字</button>
-        <button class="tab-btn" onclick="switchPage('p25')">P25 顏色</button>
-        <button class="tab-btn" onclick="switchPage('p26')">P26~P30 水果食物</button>
-        <button class="tab-btn" onclick="switchPage('p31')">P31~P40 動物與自然</button>
-        <button class="tab-btn" onclick="switchPage('p41')">P41~P56 日常與動作</button>
-    </div>
+    <div class="page-selector-title">請選擇課本頁數 (P1 ~ P56)：</div>
+    <!-- 自動生成 56 頁按鈕的區塊 -->
+    <div class="tabs-grid" id="tabs-box"></div>
 
-    <!-- 單字卡內容（英文維持小寫） -->
-    <div class="word-list" id="vocabulary-box">
-        <!-- 預設載入 P1 內容 -->
-    </div>
+    <!-- 單字卡內容區塊 -->
+    <div class="word-list" id="vocabulary-box"></div>
 </div>
 
 <script>
-    // 300字完整資料庫（英文完全小寫，句子第一個字大寫）
-    const data = {
-        p1: [
-            { en: 'i', spell: 'I', ch: '（我）' },
-            { en: 'you', spell: 'Y-O-U', ch: '（你；你們）' },
-            { en: 'he', spell: 'H-E', ch: '（他）' },
-            { en: 'she', spell: 'S-H-E', ch: '（她）' },
-            { en: 'it', spell: 'I-T', ch: '（它；牠）' },
-            { en: 'we', spell: 'W-E', ch: '（我們）' },
-            { en: 'they', spell: 'T-H-E-Y', ch: '（他們；它們；牠們）' }
-        ],
-        p6: [
-            { en: 'one', spell: 'O-N-E', ch: '（一）' },
-            { en: 'two', spell: 'T-W-O', ch: '（二）' },
-            { en: 'three', spell: 'T-H-R-E-E', ch: '（三）' },
-            { en: 'four', spell: 'F-O-U-R', ch: '（四）' },
-            { en: 'five', spell: 'F-I-V-E', ch: '（五）' },
-            { en: 'six', spell: 'S-I-X', ch: '（六）' },
-            { en: 'seven', spell: 'S-E-V-E-N', ch: '（七）' },
-            { en: 'eight', spell: 'E-I-G-H-T', ch: '（八）' },
-            { en: 'nine', spell: 'N-I-N-E', ch: '（九）' },
-            { en: 'ten', spell: 'T-E-N', ch: '（十）' }
-        ],
-        p25: [
-            { en: 'color', spell: 'C-O-L-O-R', ch: '（顏色）' },
-            { en: 'black', spell: 'B-L-A-C-K', ch: '（黑色）' },
-            { en: 'blue', spell: 'B-L-U-E', ch: '（藍色）' },
-            { en: 'brown', spell: 'B-R-O-W-N', ch: '（棕色）' },
-            { en: 'green', spell: 'G-R-E-E-N', ch: '（綠色）' },
-            { en: 'orange', spell: 'O-R-A-N-G-E', ch: '（橙色；橘子）' },
-            { en: 'pink', spell: 'P-I-N-K', ch: '（粉紅色）' },
-            { en: 'red', spell: 'R-E-D', ch: '（紅色）' },
-            { en: 'white', spell: 'W-H-I-T-E', ch: '（白色）' },
-            { en: 'yellow', spell: 'Y-E-L-L-O-W', ch: '（黃色）' }
-        ],
-        p26: [
-            { en: 'apple', spell: 'A-P-P-L-E', ch: '（蘋果）' },
-            { en: 'banana', spell: 'B-A-N-A-N-A', ch: '（香蕉）' },
-            { en: 'milk', spell: 'M-I-L-K', ch: '（牛奶）' },
-            { en: 'rice', spell: 'R-I-C-E', ch: '（米飯）' },
-            { en: 'water', spell: 'W-A-T-E-R', ch: '（水）' }
-        ],
-        p31: [
-            { en: 'cat', spell: 'C-A-T', ch: '（貓）' },
-            { en: 'dog', spell: 'D-O-G', ch: '（狗）' },
-            { en: 'bear', spell: 'B-E-A-R', ch: '（熊）' },
-            { en: 'bird', spell: 'B-I-R-D', ch: '（鳥）' },
-            { en: 'fish', spell: 'F-I-S-H', ch: '（魚）' },
-            { en: 'sun', spell: 'S-U-N', ch: '（太陽）' },
-            { en: 'moon', spell: 'M-O-O-N', ch: '（月亮）' }
-        ],
-        p41: [
-            { en: 'book', spell: 'B-O-O-K', ch: '（書本）' },
-            { en: 'pen', spell: 'P-E-N', ch: '（鋼筆；原子筆）' },
-            { en: 'school', spell: 'S-C-H-O-O-L', ch: '（學校）' },
-            { en: 'teacher', spell: 'T-E-A-C-H-E-R', ch: '（老師）' },
-            { en: 'student', spell: 'S-T-U-D-E-N-T', ch: '（學生）' },
-            { en: 'go', spell: 'G-O', ch: '（去；出發）' },
-            { en: 'see', spell: 'S-E-E', ch: '（看見）' },
-            { en: 'eat', spell: 'E-A-T', ch: '（吃）' }
-        ]
-    };
+    // 建立 1 到 56 頁的完整資料庫架構（每頁精確 6 個單字）
+    const data = {};
+    
+    // 初始化 56 頁的預設資料
+    for (let i = 1; i <= 56; i++) {
+        data[`p${i}`] = [
+            { en: `word ${i}-1`, spell: 'W-O-R-D', ch: '（待填單字 1）' },
+            { en: `word ${i}-2`, spell: 'W-O-R-D', ch: '（待填單字 2）' },
+            { en: `word ${i}-3`, spell: 'W-O-R-D', ch: '（待填單字 3）' },
+            { en: `word ${i}-4`, spell: 'W-O-R-D', ch: '（待填單字 4）' },
+            { en: `word ${i}-5`, spell: 'W-O-R-D', ch: '（待填單字 5）' },
+            { en: `word ${i}-6`, spell: 'W-O-R-D', ch: '（待填單字 6）' }
+        ];
+    }
 
-    // 渲染單字卡到畫面上
+    // 精確填入 P1 的 6 個單字內容（英文維持小寫）
+    data.p1 = [
+        { en: 'i', spell: 'I', ch: '（我）' },
+        { en: 'you', spell: 'Y-O-U', ch: '（你；你們）' },
+        { en: 'he', spell: 'H-E', ch: '（他）' },
+        { en: 'she', spell: 'S-H-E', ch: '（她）' },
+        { en: 'it', spell: 'I-T', ch: '（它；牠）' },
+        { en: 'we', spell: 'W-E', ch: '（我們）' }
+    ];
+
+    // 精確填入 P25 影片中的 6 個單字內容（英文維持小寫）
+    data.p25 = [
+        { en: 'color', spell: 'C-O-L-O-R', ch: '（顏色）' },
+        { en: 'black', spell: 'B-L-A-C-K', ch: '（黑色）' },
+        { en: 'blue', spell: 'B-L-U-E', ch: '（藍色）' },
+        { en: 'brown', spell: 'B-R-O-W-N', ch: '（棕色）' },
+        { en: 'green', spell: 'G-R-E-E-N', ch: '（綠色）' },
+        { en: 'orange', spell: 'O-R-A-N-G-E', ch: '（橙色）' }
+    ];
+
+    // 生成 56 個頁數按鈕
+    function generateTabs() {
+        const tabsBox = document.getElementById('tabs-box');
+        for (let i = 1; i <= 56; i++) {
+            const btn = document.createElement('button');
+            btn.className = i === 1 ? 'tab-btn active' : 'tab-btn';
+            btn.id = `btn-p${i}`;
+            btn.innerText = `P${i}`;
+            btn.setAttribute('onclick', `switchPage('p${i}')`);
+            tabsBox.appendChild(btn);
+        }
+    }
+
+    // 渲染指定頁數的單字卡
     function renderWords(pageKey) {
         const box = document.getElementById('vocabulary-box');
         box.innerHTML = '';
@@ -190,14 +173,14 @@
         });
     }
 
-    // 切換分頁標籤
+    // 切換頁數
     function switchPage(pageKey) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+        document.getElementById(`btn-${pageKey}`).classList.add('active');
         renderWords(pageKey);
     }
 
-    // 發音功能（音速微調慢 0.8 倍）
+    // 發音功能（音速 0.8 倍）
     function speak(text) {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
@@ -208,7 +191,8 @@
         }
     }
 
-    // 網頁開啟時預載入第一頁
+    // 啟動網頁
+    generateTabs();
     renderWords('p1');
 </script>
 
