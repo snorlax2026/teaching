@@ -1,200 +1,34 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
+<!doctype html>
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>國小必背300英語單字拼字互動卡</title>
-    <style>
-        /* 乾淨、高對比、不使用深色背景、符合 A4 黑白列印與單倍行距需求 */
-        body {
-            font-family: Arial, "Microsoft JhengHei", sans-serif;
-            line-height: 1.0;
-            color: #000000;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 15px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            border: 2px dashed #000000;
-            padding: 15px;
-        }
-        h1 {
-            font-size: 20px;
-            text-align: center;
-            margin: 0 0 10px 0;
-        }
-        /* 56頁方格切換選單，極致節省垂直空間 */
-        .page-selector-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin: 0 0 5px 0;
-        }
-        .tabs-grid {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 4px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #000000;
-            padding-bottom: 10px;
-        }
-        .tab-btn {
-            padding: 5px 0;
-            border: 1px solid #000000;
-            background-color: #ffffff;
-            color: #000000;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 4px;
-            text-align: center;
-        }
-        .tab-btn.active {
-            background-color: #000000;
-            color: #ffffff;
-        }
-        .word-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        /* 直覺式單字卡，極致縮小垂直高度，單倍行距 */
-        .word-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            border: 1px solid #000000;
-            border-radius: 8px;
-            background-color: #ffffff;
-            cursor: pointer;
-        }
-        .word-card:hover {
-            background-color: #000000;
-            color: #ffffff;
-        }
-        .english-part {
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .spell-part {
-            font-size: 13px;
-            font-weight: normal;
-            margin-left: 8px;
-            letter-spacing: 1px;
-            color: #555555;
-        }
-        .word-card:hover .spell-part {
-            color: #cccccc;
-        }
-        .chinese-part {
-            font-size: 14px;
-            font-weight: bold;
-        }
-    </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>國小必備300單字｜Nancy 老師</title>
+<style>
+:root{--cream:#fffaf2;--pink:#f7cbd5;--lav:#ddd3f5;--mint:#d9eee5;--brown:#73584f;--deep:#523d37;--white:#fff}. *{box-sizing:border-box}*{box-sizing:border-box}body{margin:0;color:var(--brown);font-family:"Microsoft JhengHei",system-ui,sans-serif;background:radial-gradient(circle at 6% 8%,#f8cfd888 0 90px,transparent 92px),radial-gradient(circle at 94% 15%,#ddd3f588 0 120px,transparent 122px),var(--cream);min-height:100vh}.app{width:min(980px,calc(100% - 28px));margin:auto;padding:28px 0 55px}.top{display:flex;align-items:center;gap:20px;padding:26px 30px;border-radius:30px;background:#ffffffdd;box-shadow:0 14px 38px #73584f20}.bear{font-size:72px}.top h1{margin:0;color:var(--deep);font-size:clamp(27px,5vw,42px)}.top p{margin:4px 0 0}.toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin:22px 0 14px}.search{width:100%;padding:13px 17px;border:2px solid var(--pink);border-radius:999px;background:white;font:inherit;color:var(--deep);outline:none}.search:focus{border-color:#c4addf}.count{align-self:center;padding:8px 14px;border-radius:999px;background:var(--mint);font-weight:700}.pages{display:flex;gap:8px;overflow-x:auto;padding:7px 2px 14px;scrollbar-color:#d8b8c0 transparent}.page-btn{flex:0 0 auto;width:48px;height:42px;border:2px solid #edd5da;border-radius:14px;background:white;color:var(--brown);font-weight:800;cursor:pointer}.page-btn:hover,.page-btn.active{border-color:var(--brown);background:var(--brown);color:white}.panel{padding:26px;border-radius:30px;background:#ffffffdd;box-shadow:0 14px 38px #73584f20}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}.panel h2{margin:0;color:var(--deep)}.listen-all{padding:10px 16px;border:0;border-radius:999px;background:var(--lav);color:var(--deep);font-weight:800;cursor:pointer}.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.card{display:flex;align-items:center;gap:14px;padding:18px;border:2px solid #f2dfe3;border-radius:22px;background:#fff8f7;cursor:pointer;text-align:left;color:var(--brown);transition:.16s}.card:nth-child(even){background:#f8f5ff;border-color:#e2daf4}.card:hover{transform:translateY(-2px);box-shadow:0 8px 18px #73584f18}.sound{display:grid;place-items:center;flex:0 0 44px;height:44px;border-radius:15px;background:white;font-size:21px}.word{display:block;color:var(--deep);font-size:21px;font-weight:900}.spell{display:block;margin-top:2px;color:#9a7b72;font-size:13px;letter-spacing:.12em}.empty{text-align:center;padding:42px;color:#9a7b72}.home{display:inline-block;margin-top:20px;color:var(--brown);font-weight:700;text-decoration:none}footer{text-align:center;margin-top:22px;color:#a1847c;font-size:13px}@media(max-width:650px){.top{padding:22px 20px}.bear{font-size:55px}.toolbar{grid-template-columns:1fr}.count{justify-self:start}.panel{padding:20px 15px}.cards{grid-template-columns:1fr}.panel-head{align-items:flex-start;flex-direction:column}}
+</style>
 </head>
-<body>
-
-<div class="container">
-    <h1>角落小夥伴 國小必背300字互動卡 🧸</h1>
-    
-    <div class="page-selector-title">請選擇課本頁數 (P1 ~ P56)：</div>
-    <!-- 自動生成 56 頁按鈕的區塊 -->
-    <div class="tabs-grid" id="tabs-box"></div>
-
-    <!-- 單字卡內容區塊 -->
-    <div class="word-list" id="vocabulary-box"></div>
-</div>
-
+<body><main class="app">
+<header class="top"><div class="bear">🧸</div><div><h1>國小必備300單字</h1><p>選擇課本頁數，點一下單字就能聽發音！</p></div></header>
+<div class="toolbar"><input class="search" id="search" type="search" placeholder="🔎 搜尋單字，例如：apple"><div class="count" id="count"></div></div>
+<nav class="pages" id="pages" aria-label="課本頁數"></nav>
+<section class="panel"><div class="panel-head"><h2 id="title">P1</h2><button class="listen-all" id="listenAll">🔊 全部播放</button></div><div class="cards" id="cards"></div></section>
+<a class="home" href="index.html">← 回到練習網站首頁</a><footer>Words verified from the 56-video playlist provided by Nancy.</footer>
+</main>
 <script>
-    // 建立 1 到 56 頁的完整資料庫架構（每頁精確 6 個單字）
-    const data = {};
-    
-    // 初始化 56 頁的預設資料
-    for (let i = 1; i <= 56; i++) {
-        data[`p${i}`] = [
-            { en: `word ${i}-1`, spell: 'W-O-R-D', ch: '（待填單字 1）' },
-            { en: `word ${i}-2`, spell: 'W-O-R-D', ch: '（待填單字 2）' },
-            { en: `word ${i}-3`, spell: 'W-O-R-D', ch: '（待填單字 3）' },
-            { en: `word ${i}-4`, spell: 'W-O-R-D', ch: '（待填單字 4）' },
-            { en: `word ${i}-5`, spell: 'W-O-R-D', ch: '（待填單字 5）' },
-            { en: `word ${i}-6`, spell: 'W-O-R-D', ch: '（待填單字 6）' }
-        ];
-    }
-
-    // 精確填入 P1 的 6 個單字內容（英文維持小寫）
-    data.p1 = [
-        { en: 'i', spell: 'I', ch: '（我）' },
-        { en: 'you', spell: 'Y-O-U', ch: '（你；你們）' },
-        { en: 'he', spell: 'H-E', ch: '（他）' },
-        { en: 'she', spell: 'S-H-E', ch: '（她）' },
-        { en: 'it', spell: 'I-T', ch: '（它；牠）' },
-        { en: 'we', spell: 'W-E', ch: '（我們）' }
-    ];
-
-    // 精確填入 P25 影片中的 6 個單字內容（英文維持小寫）
-    data.p25 = [
-        { en: 'color', spell: 'C-O-L-O-R', ch: '（顏色）' },
-        { en: 'black', spell: 'B-L-A-C-K', ch: '（黑色）' },
-        { en: 'blue', spell: 'B-L-U-E', ch: '（藍色）' },
-        { en: 'brown', spell: 'B-R-O-W-N', ch: '（棕色）' },
-        { en: 'green', spell: 'G-R-E-E-N', ch: '（綠色）' },
-        { en: 'orange', spell: 'O-R-A-N-G-E', ch: '（橙色）' }
-    ];
-
-    // 生成 56 個頁數按鈕
-    function generateTabs() {
-        const tabsBox = document.getElementById('tabs-box');
-        for (let i = 1; i <= 56; i++) {
-            const btn = document.createElement('button');
-            btn.className = i === 1 ? 'tab-btn active' : 'tab-btn';
-            btn.id = `btn-p${i}`;
-            btn.innerText = `P${i}`;
-            btn.setAttribute('onclick', `switchPage('p${i}')`);
-            tabsBox.appendChild(btn);
-        }
-    }
-
-    // 渲染指定頁數的單字卡
-    function renderWords(pageKey) {
-        const box = document.getElementById('vocabulary-box');
-        box.innerHTML = '';
-        
-        data[pageKey].forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'word-card';
-            card.setAttribute('onclick', `speak('${item.en}')`);
-            card.innerHTML = `
-                <div class="english-part">${item.en} <span class="spell-part">${item.spell}</span></div>
-                <div class="chinese-part">${item.ch}</div>
-            `;
-            box.appendChild(card);
-        });
-    }
-
-    // 切換頁數
-    function switchPage(pageKey) {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`btn-${pageKey}`).classList.add('active');
-        renderWords(pageKey);
-    }
-
-    // 發音功能（音速 0.8 倍）
-    function speak(text) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            utterance.rate = 0.8;
-            window.speechSynthesis.speak(utterance);
-        }
-    }
-
-    // 啟動網頁
-    generateTabs();
-    renderWords('p1');
-</script>
-
-</body>
-</html>
+const data={
+1:['I','you','he','she','it','we'],2:['they','I am','you are','he is','she is','it is'],3:['we are','they are','my','your','his','her'],4:['how','what','when','where','who','why'],5:['week','year','today','morning','afternoon','evening'],6:['night','book','book bag','chair','computer','desk'],7:['eraser','marker','notebook','pen','pencil','pencil box'],8:['ruler','father','mother','dad','mom','grandfather'],9:['grandmother','grandma','grandpa','brother','sister','aunt'],10:['uncle','girl','boy','student','classmate','friend'],11:['Mr.','Mrs.','Ms.','arm','ear','eye'],12:['feet','foot','hair','hand','head','leg'],13:['mouth','nose','apple','banana','bread','cake'],14:['egg','hamburger','hot dog','ice cream','juice','milk'],15:['pizza','sandwich','soup','tea','water','breakfast'],16:['dinner','lunch','animal','bear','bird','cat'],17:['chicken','dog','elephant','fish','lion','monkey'],18:['pig','rabbit','snake','tiger','frog','zoo'],19:['ant','bee','number','zero','one','two'],20:['three','four','five','six','seven','eight'],21:['nine','ten','eleven','twelve','twenty','thirty'],22:['forty','fifty','sixty','seventy','eighty','ninety'],23:['home','bathroom','bedroom','living room','kitchen','school'],24:['classroom','park','library','bookstore','store','supermarket'],25:['color','black','blue','brown','green','orange'],26:['pink','purple','red','white','yellow','dress'],27:['hat','jacket','shirt','shoes','shorts','skirt'],28:['beautiful','handsome','cute','smart','fat'],29:['thin','tall','big','small','long','short'],30:['clean','good','fine','new','old','bad'],31:['nice','great','weather','cloudy','hot','cold'],32:['cool','warm','sunny','windy','rainy','goodbye'],33:['hello','thank','sorry','please','bike','bus'],34:['car','taxi','train','no','yes','not'],35:['OK','open','close','cook','cut','dance'],36:['draw','drink','eat','fly','get up','come'],37:['go','has','have','help','like','listen'],38:['look','meet','play','read','run','see'],39:['sing','sleep','study','swim','take','talk'],40:['walk','want','wash','watch','write','name'],41:['art','Chinese','English','math','P.E.','baseball'],42:['basketball','dodgeball','doctor','teacher','spring','summer'],43:['fall','winter','January','February','March','April'],44:['May','June','July','August','September','October'],45:['November','December','Monday','Tuesday','Wednesday','Thursday'],46:['Friday','Saturday','Sunday','at','by','in'],47:['on','out','outside','under','angry','happy'],48:['sad','sick','sorry','thirsty','hungry','tired'],49:['card','bag','ball','bed','birthday','box'],50:['can','CD','comic book','do','does','dollar'],51:['door','window','star','sun','moon','flower'],52:['boy','key','kite','toy','may','a'],53:['an','some','many','much','table','telephone'],54:['TV','that','this','the','here','there'],55:['these','those','too','very','bring','jump'],56:['kick','laugh','pull','push','smell','turn']};
+data[28].unshift('T-shirt');
+const meanings={
+1:['我','你；你們','他','她','它','我們'],2:['他們','我是','你是；你們是','他是','她是','它是'],3:['我們是','他們是','我的','你的；你們的','他的','她的'],4:['如何；怎麼','什麼','何時','哪裡','誰','為什麼'],5:['星期；週','年','今天','早上','下午','晚上'],6:['夜晚','書','書包','椅子','電腦','書桌'],7:['橡皮擦','彩色筆；白板筆','筆記本','原子筆','鉛筆','鉛筆盒'],8:['尺','父親','母親','爸爸','媽媽','祖父；外祖父'],9:['祖母；外祖母','奶奶；外婆','爺爺；外公','兄弟','姊妹','阿姨；姑姑；嬸嬸'],10:['叔叔；舅舅；伯伯','女孩','男孩','學生','同班同學','朋友'],11:['先生','太太','女士','手臂','耳朵','眼睛'],12:['腳（複數）','腳','頭髮','手','頭','腿'],13:['嘴巴','鼻子','蘋果','香蕉','麵包','蛋糕'],14:['蛋','漢堡','熱狗','冰淇淋','果汁','牛奶'],15:['披薩','三明治','湯','茶','水','早餐'],16:['晚餐','午餐','動物','熊','鳥','貓'],17:['雞','狗','大象','魚','獅子','猴子'],18:['豬','兔子','蛇','老虎','青蛙','動物園'],19:['螞蟻','蜜蜂','數字','零','一','二'],20:['三','四','五','六','七','八'],21:['九','十','十一','十二','二十','三十'],22:['四十','五十','六十','七十','八十','九十'],23:['家','浴室','臥室','客廳','廚房','學校'],24:['教室','公園','圖書館','書店','商店','超級市場'],25:['顏色','黑色','藍色','棕色','綠色','橘色'],26:['粉紅色','紫色','紅色','白色','黃色','洋裝'],27:['帽子','外套','襯衫','鞋子','短褲','裙子'],28:['美麗的','英俊的','可愛的','聰明的','胖的'],29:['瘦的','高的','大的','小的','長的','短的'],30:['乾淨的','好的','很好；健康的','新的','舊的；年老的','壞的'],31:['美好的；友善的','很棒的','天氣','多雲的','熱的','冷的'],32:['涼爽的','溫暖的','晴朗的','有風的','下雨的','再見'],33:['哈囉','感謝','抱歉的','請','腳踏車','公車'],34:['汽車','計程車','火車','不；沒有','是；好的','不'],35:['好的','打開','關上','煮；烹飪','切','跳舞'],36:['畫畫','喝','吃','飛','起床','來'],37:['去','有（第三人稱單數）','有','幫助','喜歡','聽'],38:['看','遇見；認識','玩','閱讀','跑','看見'],39:['唱歌','睡覺','讀書；學習','游泳','拿；帶','說話'],40:['走路','想要','洗','觀看','寫','名字'],41:['美術','中文','英文','數學','體育','棒球'],42:['籃球','躲避球','醫生','老師','春天','夏天'],43:['秋天','冬天','一月','二月','三月','四月'],44:['五月','六月','七月','八月','九月','十月'],45:['十一月','十二月','星期一','星期二','星期三','星期四'],46:['星期五','星期六','星期日','在（時間／地點）','藉由；搭乘','在……裡面'],47:['在……上面','出去；在外','在外面','在……下面','生氣的','開心的'],48:['難過的','生病的','抱歉的','口渴的','飢餓的','疲倦的'],49:['卡片','袋子','球','床','生日','盒子'],50:['能；可以','光碟','漫畫書','做','做（第三人稱單數）','美元'],51:['門','窗戶','星星','太陽','月亮','花'],52:['男孩','鑰匙','風箏','玩具','可以；可能','一個'],53:['一個','一些','許多（可數）','許多（不可數）','桌子','電話'],54:['電視','那個','這個','這；那（定冠詞）','這裡','那裡'],55:['這些','那些','也；太','非常','帶來','跳'],56:['踢','笑','拉','推','聞','轉；轉動']};
+meanings[28].unshift('T恤');
+const chinese={};Object.keys(data).forEach(p=>data[p].forEach((word,i)=>chinese[word]=meanings[p][i]));
+let page=1;const pages=document.querySelector('#pages'),cards=document.querySelector('#cards'),title=document.querySelector('#title'),count=document.querySelector('#count'),search=document.querySelector('#search');
+const all=Object.values(data).flat();count.textContent=`共 ${all.length} 個單字`;
+for(let i=1;i<=56;i++){const b=document.createElement('button');b.className='page-btn'+(i===1?' active':'');b.textContent=`P${i}`;b.onclick=()=>showPage(i);pages.appendChild(b)}
+function speak(word){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.72;speechSynthesis.speak(u)}
+function draw(words,label){title.textContent=label;cards.innerHTML='';if(!words.length){cards.innerHTML='<div class="empty">找不到符合的單字 🐾</div>';return}words.forEach(w=>{const b=document.createElement('button');b.className='card';b.innerHTML=`<span class="sound">🔊</span><span><span class="word">${w}</span><span class="spell">${chinese[w]||''}</span></span>`;b.onclick=()=>speak(w);cards.appendChild(b)})}
+function showPage(n){page=n;search.value='';document.querySelectorAll('.page-btn').forEach((b,i)=>b.classList.toggle('active',i===n-1));draw(data[n],`P${n}・${data[n].length} 個單字`)}
+search.oninput=()=>{const raw=search.value.trim(),q=raw.toLowerCase();if(!q){showPage(page);return}draw(all.filter(w=>w.toLowerCase().includes(q)||(chinese[w]||'').includes(raw)),`搜尋「${search.value}」`)};
+document.querySelector('#listenAll').onclick=async()=>{speechSynthesis.cancel();const words=search.value?all.filter(w=>w.toLowerCase().includes(search.value.toLowerCase())):data[page];for(const w of words){await new Promise(resolve=>{const u=new SpeechSynthesisUtterance(w);u.lang='en-US';u.rate=.72;u.onend=resolve;u.onerror=resolve;speechSynthesis.speak(u)})}};
+showPage(1);
+</script></body></html>
