@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Come On Everyone 第二冊單字｜Nancy 老師</title>
+    <style>
+        :root {
+            --pika-yellow: #FFDE00;
+            --pika-red: #FF0000;
+            --soft-blue: #B5E0FF;
+            --bg-cream: #FFFDF0;
+            --text-black: #000000;
+            --scramble-color: #555;
+        }
+
+        /* 全域樣式：防止捲動與藍色高亮 */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; user-select: none; }
+        html, body { height: 100%; width: 100%; overflow: hidden; background-color: var(--bg-cream); }
+        body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; display: flex; justify-content: center; align-items: center; }
+
+        /* 主容器：限制最大寬度，確保跨平台一致 */
+        .parent-card {
+            background: #fff;
+            width: 100%;
+            max-width: 500px; /* 針對手機優化寬度 */
+            height: 100%;
+            border: 4px solid var(--pika-yellow);
+            display: flex;
+            flex-direction: column;
+            padding: 5px 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .parent-card { height: 96%; border-radius: 30px; padding: 15px; }
+        }
+
+        /* 標頭：極致壓縮 */
+        .header { text-align: center; padding: 2px 0; }
+        .header h1 { font-size: 15px; color: #444; margin-top: 2px; }
+        .header .names { font-size: 11px; color: #999; margin-bottom: 2px; }
+
+        /* 功能按鈕與單元名稱整合 */
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 4px 8px;
+            margin-bottom: 5px;
+        }
+
+        .part-label-text { font-size: 14px; font-weight: 900; color: #000; }
+
+        .toggle-ans-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            font-size: 11px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* 單元導覽：按鈕變扁 */
+        .unit-nav {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 3px;
+            margin-bottom: 5px;
+        }
+        .unit-dot {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 11px;
+            padding: 8px 0;
+            cursor: pointer;
+            font-weight: 900;
+            color: #666;
+            text-align: center;
+        }
+        .unit-dot.active { background: var(--pika-yellow); color: #000; border-color: #E6C600; box-shadow: 0 1px 0 #E6C600; }
+
+        .note-text {
+            text-align: center;
+            font-size: 11px;
+            color: var(--pika-red);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* 網格區：讓它佔據剩餘空間 */
+        .vocab-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 6px;
+            margin-bottom: 10px; /* 給底部留一點空地 */
+        }
+
+        .word-item {
+            background: #ffffff;
+            border: 1.5px solid #eee;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            padding: 4px;
+            box-shadow: 0 2px 0 #f5f5f5;
+        }
+
+        .word-num { position: absolute; top: 4px; left: 6px; font-size: 10px; color: #ddd; font-weight: bold; }
+        .card-speaker { position: absolute; top: 4px; right: 6px; font-size: 15px; opacity: 0.4; }
+
+        .zh-txt {
+            font-size: clamp(18px, 4.5vh, 28px);
+            font-weight: 900;
+            color: var(--text-black);
+            line-height: 1.1;
+        }
+
+        .scramble-txt {
+            font-size: clamp(12px, 2vh, 18px);
+            color: var(--scramble-color);
+            font-family: monospace;
+            letter-spacing: 1px;
+            background: #fdf6e3;
+            padding: 1px 5px;
+            border-radius: 4px;
+            margin: 2px 0;
+            font-weight: bold;
+        }
+
+        .en-txt {
+            font-size: clamp(10px, 1.5vh, 14px);
+            color: var(--pika-red);
+            font-weight: 900;
+            visibility: hidden; 
+        }
+        .show-answers .en-txt { visibility: visible; }
+
+        .footer-info { text-align: center; font-size: 9px; color: #eee; padding-bottom: 2px; }
+
+        /* 封面遮罩 */
+        #mask {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; padding: 20px;
+        }
+        .pika-icon { width: 100px; height: 100px; margin-bottom: 15px; }
+        .start-btn {
+            background-color: var(--pika-yellow);
+            border: none; padding: 15px 50px;
+            font-size: 20px; font-weight: bold; border-radius: 100px;
+            cursor: pointer; box-shadow: 0 8px 0 #E6C600;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 封面 -->
+<div id="mask">
+    <div class="pika-icon">
+        <svg viewBox="0 0 200 200">
+            <path d="M50 70 L20 10 Q20 0 30 5 L75 60" fill="#FFDE00" stroke="#000" stroke-width="2"/>
+            <path d="M150 70 L180 10 Q180 0 170 5 L125 60" fill="#FFDE00" stroke="#000" stroke-width="2"/>
+            <circle cx="100" cy="120" r="70" fill="#FFDE00" stroke="#000" stroke-width="2"/>
+            <circle cx="75" cy="110" r="7" fill="#000"/><circle cx="125" cy="110" r="7" fill="#000"/>
+            <circle cx="55" cy="140" r="12" fill="#FF0000"/><circle cx="145" cy="140" r="12" fill="#FF0000"/>
+            <path d="M95 140 Q100 150 105 140" fill="none" stroke="#000" stroke-width="2"/>
+        </svg>
+    </div>
+    <h1 style="color:#333; font-size:24px;">Come On Everyone 第二冊單字</h1>
+    <p style="color:#aaa; font-size:14px; margin: 10px 0 20px;">by Teacher Nancy</p>
+    <button class="start-btn" onclick="startApp()">GO! 開始</button>
+</div>
+
+<div class="parent-card">
+    <div class="header">
+        <h1>Come On Everyone 第二冊單字</h1>
+        <div class="names">U1～U8 Vocabulary Practice</div>
+    </div>
+
+    <!-- 單元點選 -->
+    <div class="unit-nav" id="nav-container"></div>
+
+    <!-- 單元標題與答案開關整合 -->
+    <div class="control-header">
+        <span class="part-label-text" id="current-label">Unit 1-1</span>
+        <button class="toggle-ans-btn" id="toggle-btn" onclick="toggleAnswers()">顯示答案</button>
+    </div>
+
+    <div class="note-text">註記：按喇叭圖示可以聽發音</div>
+    
+    <div class="vocab-grid" id="vocab-display"></div>
+
+    <div class="footer-info">Teacher Nancy English Class</div>
+</div>
+
+<script>
+    const VOCAB_BOOK2 = {
+        "1-1": { title: "U1 Fun and Play｜Beach", words: [{en:"swim tube",zh:"游泳圈"},{en:"water gun",zh:"水槍"},{en:"boat",zh:"小船"},{en:"beach ball",zh:"海灘球"},{en:"life vest",zh:"救生衣"},{en:"sand bucket",zh:"沙桶"}] },
+        "1-2": { title: "U1 Fun and Play｜Toys", words: [{en:"glove",zh:"手套"},{en:"bat",zh:"球棒"},{en:"soccer ball",zh:"足球"},{en:"skateboard",zh:"滑板"},{en:"scooter",zh:"滑板車"},{en:"yo-yo",zh:"溜溜球"}] },
+        "2-1": { title: "U2 At School｜Supplies", words: [{en:"marker",zh:"麥克筆"},{en:"stapler",zh:"釘書機"},{en:"paintbrush",zh:"水彩筆"},{en:"glue stick",zh:"口紅膠"},{en:"colored pencil",zh:"彩色鉛筆"},{en:"pencil sharpener",zh:"削鉛筆機"}] },
+        "2-2": { title: "U2 At School｜Food", words: [{en:"pizza",zh:"披薩"},{en:"fish",zh:"魚"},{en:"chicken",zh:"雞肉"},{en:"steak",zh:"牛排"},{en:"soup",zh:"湯"},{en:"juice",zh:"果汁"}] },
+        "3-1": { title: "U3 Animals｜Farm", words: [{en:"duck",zh:"鴨子"},{en:"horse",zh:"馬"},{en:"turkey",zh:"火雞"},{en:"cow",zh:"乳牛"},{en:"goat",zh:"山羊"},{en:"rabbit",zh:"兔子"}] },
+        "3-2": { title: "U3 Animals｜Zoo", words: [{en:"skunk",zh:"臭鼬"},{en:"cheetah",zh:"獵豹"},{en:"snake",zh:"蛇"},{en:"owl",zh:"貓頭鷹"},{en:"peacock",zh:"孔雀"},{en:"fox",zh:"狐狸"}] },
+        "4-1": { title: "U4 Around Town｜Jobs 1", words: [{en:"doctor",zh:"醫生"},{en:"cook",zh:"廚師"},{en:"teacher",zh:"老師"},{en:"nurse",zh:"護理師"},{en:"bus driver",zh:"公車司機"},{en:"student",zh:"學生"}] },
+        "4-2": { title: "U4 Around Town｜Jobs 2", words: [{en:"singers",zh:"歌手"},{en:"dancers",zh:"舞者"},{en:"farmers",zh:"農夫"},{en:"vets",zh:"獸醫"},{en:"firefighters",zh:"消防員"},{en:"police officers",zh:"警官"}] },
+        "5-1": { title: "U5 Routines｜Time", words: [{en:"one o'clock",zh:"一點"},{en:"one ten",zh:"一點十分"},{en:"one fifteen",zh:"一點十五分"},{en:"one thirty",zh:"一點半"},{en:"one forty-five",zh:"一點四十五分"},{en:"two o'clock",zh:"兩點"}] },
+        "5-2": { title: "U5 Routines｜Daily", words: [{en:"get up",zh:"起床"},{en:"eat breakfast",zh:"吃早餐"},{en:"go to school",zh:"去上學"},{en:"eat lunch",zh:"吃午餐"},{en:"eat dinner",zh:"吃晚餐"},{en:"go to bed",zh:"睡覺"}] },
+        "6-1": { title: "U6 Music and Sports｜Music", words: [{en:"guitar",zh:"吉他"},{en:"flute",zh:"長笛"},{en:"violin",zh:"小提琴"},{en:"cello",zh:"大提琴"},{en:"piano",zh:"鋼琴"},{en:"drums",zh:"鼓"}] },
+        "6-2": { title: "U6 Music and Sports｜Sports", words: [{en:"soccer",zh:"足球"},{en:"baseball",zh:"棒球"},{en:"basketball",zh:"籃球"},{en:"badminton",zh:"羽毛球"},{en:"volleyball",zh:"排球"},{en:"table tennis",zh:"桌球"}] },
+        "7-1": { title: "U7 Things to Do｜Actions 1", words: [{en:"study",zh:"讀書"},{en:"draw",zh:"畫畫"},{en:"talk",zh:"說話"},{en:"drink",zh:"喝"},{en:"eat",zh:"吃"},{en:"write",zh:"寫字"}] },
+        "7-2": { title: "U7 Things to Do｜Actions 2", words: [{en:"dance",zh:"跳舞"},{en:"sing",zh:"唱歌"},{en:"jump",zh:"跳"},{en:"walk",zh:"走"},{en:"laugh",zh:"笑"},{en:"run",zh:"跑"}] },
+        "8-1": { title: "U8 At Home｜Home", words: [{en:"lamp",zh:"檯燈"},{en:"mirror",zh:"鏡子"},{en:"bookcase",zh:"書櫃"},{en:"bed",zh:"床"},{en:"dresser",zh:"梳妝台"},{en:"sofa",zh:"沙發"}] },
+        "8-2": { title: "U8 At Home｜Rooms", words: [{en:"bedroom",zh:"臥室"},{en:"kitchen",zh:"廚房"},{en:"living room",zh:"客廳"},{en:"bathroom",zh:"浴室"},{en:"attic",zh:"閣樓"},{en:"garage",zh:"車庫"}] }
+    };
+
+    function scramble(word) {
+        if (word.includes(' ')) return word.split(' ').map(w => scramble(w)).join(' ');
+        let a = word.split(""), n = a.length;
+        for(let i = n - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+        }
+        let res = a.join("");
+        return res === word ? scramble(word) : res;
+    }
+
+    function initNav() {
+        const nav = document.getElementById('nav-container');
+        nav.innerHTML = "";
+        Object.keys(VOCAB_BOOK2).forEach(key => {
+            const btn = document.createElement('div');
+            btn.className = 'unit-dot';
+            btn.innerText = key;
+            btn.id = 'dot-' + key;
+            btn.onclick = () => showUnit(key);
+            nav.appendChild(btn);
+        });
+    }
+
+    function showUnit(key) {
+        document.querySelectorAll('.unit-dot').forEach(d => d.classList.remove('active'));
+        const activeDot = document.getElementById('dot-' + key);
+        if(activeDot) activeDot.classList.add('active');
+
+        document.getElementById('current-label').innerText = VOCAB_BOOK2[key].title;
+        const container = document.getElementById('vocab-display');
+        container.innerHTML = "";
+        
+        VOCAB_BOOK2[key].words.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'word-item';
+            card.onclick = () => speak(item.en);
+            card.innerHTML = `
+                <div class="word-num">${index + 1}</div>
+                <div class="card-speaker">📢</div>
+                <div class="zh-txt">${item.zh}</div>
+                <div class="scramble-txt">${scramble(item.en)}</div>
+                <div class="en-txt">${item.en}</div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function toggleAnswers() {
+        document.body.classList.toggle('show-answers');
+        const btn = document.getElementById('toggle-btn');
+        btn.innerText = document.body.classList.contains('show-answers') ? "隱藏答案" : "顯示答案";
+    }
+
+    function startApp() {
+        document.getElementById('mask').style.display = 'none';
+        initNav();
+        showUnit("1-1");
+    }
+
+    function speak(text) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'en-US';
+        utter.rate = 0.8;
+        window.speechSynthesis.speak(utter);
+    }
+</script>
+</body>
+</html>
