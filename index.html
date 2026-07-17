@@ -10,11 +10,11 @@
 body{margin:0;min-height:100vh;color:var(--ink);font-family:"Microsoft JhengHei",system-ui,sans-serif;background:radial-gradient(circle at 5% 10%,#ffdbe4 0 70px,transparent 72px),radial-gradient(circle at 94% 14%,#e6dcfa 0 90px,transparent 92px),radial-gradient(circle at 90% 92%,#dff3e9 0 75px,transparent 77px),var(--cream)}
 .page{width:min(1180px,calc(100% - 28px));margin:auto;padding:14px 0 20px}
 .hero,.lessons{position:relative;overflow:hidden;border:3px solid #fff;border-radius:28px;background:#ffffffdf;box-shadow:0 12px 30px #73584f1c}
-.hero{display:grid;grid-template-columns:1fr 190px;align-items:center;min-height:190px;padding:24px 34px;background:linear-gradient(135deg,#fff,#fff0ec)}
+.hero{display:grid;grid-template-columns:1fr 290px;align-items:center;min-height:190px;padding:24px 34px;background:linear-gradient(135deg,#fff,#fff0ec)}
 .tag{display:inline-block;margin:0 0 5px;padding:4px 12px;border-radius:999px;background:var(--purple);font-size:12px;font-weight:900;letter-spacing:.08em}
 h1{margin:0;font-size:clamp(29px,4vw,43px);line-height:1.15;color:#5b4039}
 .intro{margin:8px 0 0;font-size:16px}
-.bear-art{width:160px;height:145px;filter:drop-shadow(0 8px 8px #73584f20);animation:float 3s ease-in-out infinite}
+.mascot-wrap{position:relative;width:280px;height:155px}.bear-art{position:absolute;right:0;top:0;width:205px;height:155px;filter:drop-shadow(0 8px 8px #73584f20);animation:float 3s ease-in-out infinite}.abc-big{position:absolute;left:0;bottom:2px;font:900 48px/1 "Arial Rounded MT Bold",Arial,sans-serif;letter-spacing:-4px;transform:rotate(-5deg)}.abc-big .a{color:#e986a4}.abc-big .b{color:#8d75cf}.abc-big .c{color:#67a988}
 .sparkle{position:absolute;font-size:24px;animation:twinkle 2s ease-in-out infinite}.s1{right:185px;top:20px}.s2{right:25px;bottom:16px;animation-delay:.7s}.flower{position:absolute;left:52%;bottom:13px;font-size:22px;transform:rotate(-12deg)}
 .lessons{margin-top:13px;padding:18px 22px 24px}
 .lessons h2{margin:0;text-align:center;font-size:23px;color:#5b4039}.hint{text-align:center;margin:1px 0 13px;color:#9b7e75;font-size:14px}
@@ -28,14 +28,14 @@ h1{margin:0;font-size:clamp(29px,4vw,43px);line-height:1.15;color:#5b4039}
 footer{text-align:center;margin-top:10px;color:#a58a81;font-size:13px}
 @keyframes float{50%{transform:translateY(-7px) rotate(1deg)}}@keyframes twinkle{50%{transform:scale(.65);opacity:.45}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-@media(max-width:850px){.hero{grid-template-columns:1fr 130px}.bear-art{width:125px}.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.page{padding:9px 0 16px}.hero{grid-template-columns:1fr;padding:20px;text-align:center;min-height:auto}.bear-art,.sparkle,.flower{display:none}.lessons{padding:16px 14px 20px}.grid{grid-template-columns:1fr}.card{min-height:112px;padding:14px}.card p{margin:6px 0 8px}}
+@media(max-width:850px){.hero{grid-template-columns:1fr 230px}.mascot-wrap{width:225px}.bear-art{width:175px}.abc-big{font-size:40px}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.page{padding:9px 0 16px}.hero{grid-template-columns:1fr;padding:20px;text-align:center;min-height:auto}.mascot-wrap,.sparkle,.flower{display:none}.lessons{padding:16px 14px 20px}.grid{grid-template-columns:1fr}.card{min-height:112px;padding:14px}.card p{margin:6px 0 8px}}
 </style>
 </head>
 <body><main class="page">
 <section class="hero">
   <div><p class="tag">WELCOME TO NANCY'S CLASS</p><h1>Nancy 老師的<br>單字練習小天地</h1><p class="intro">挑一個練習，跟著小熊開心學英文吧！</p></div>
-  <svg class="bear-art" viewBox="0 0 180 160" role="img" aria-label="可愛粉彩小熊">
+  <div class="mascot-wrap"><svg class="bear-art" viewBox="0 0 180 160" role="img" aria-label="可愛粉彩小熊">
     <circle cx="43" cy="42" r="25" fill="#9c684b"/><circle cx="137" cy="42" r="25" fill="#9c684b"/>
     <circle cx="43" cy="42" r="13" fill="#f1aa79"/><circle cx="137" cy="42" r="13" fill="#f1aa79"/>
     <ellipse cx="90" cy="87" rx="62" ry="59" fill="#a97050"/>
@@ -45,9 +45,7 @@ footer{text-align:center;margin-top:10px;color:#a58a81;font-size:13px}
     <path d="M82 94 Q90 88 98 94 Q96 103 90 103 Q84 103 82 94" fill="#55352f"/>
     <path d="M90 103 Q90 115 78 114 M90 103 Q90 115 102 114" fill="none" stroke="#55352f" stroke-width="3" stroke-linecap="round"/>
     <ellipse cx="48" cy="99" rx="10" ry="6" fill="#ef9cae" opacity=".75"/><ellipse cx="132" cy="99" rx="10" ry="6" fill="#ef9cae" opacity=".75"/>
-    <path d="M58 25 Q90 5 122 25" fill="none" stroke="#f5c3d3" stroke-width="8" stroke-linecap="round"/>
-    <circle cx="90" cy="13" r="10" fill="#f3abc3"/><circle cx="80" cy="16" r="8" fill="#ffd3df"/><circle cx="100" cy="16" r="8" fill="#ffd3df"/>
-  </svg>
+  </svg><div class="abc-big" aria-label="ABC"><span class="a">A</span><span class="b">B</span><span class="c">C</span></div></div>
   <span class="sparkle s1">✨</span><span class="sparkle s2">⭐</span><span class="flower">🌸</span>
 </section>
 <section class="lessons"><h2>🌟 單字練習網站</h2><p class="hint">四個教材都在這一頁，點一下就開始！</p>
