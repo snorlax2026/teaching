@@ -1,18 +1,61 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nancy 老師的單字練習小天地</title>
 <style>
-:root{--cream:#fffaf2;--pink:#f8cfd8;--lav:#ddd3f5;--brown:#775b52;--deep:#5d443d}*{box-sizing:border-box}body{margin:0;color:var(--brown);font-family:"Microsoft JhengHei",system-ui,sans-serif;line-height:1.55;background:radial-gradient(circle at 8% 8%,#f8cfd899 0 70px,transparent 72px),radial-gradient(circle at 92% 15%,#ddd3f599 0 85px,transparent 87px),var(--cream);min-height:100vh}.page{width:min(1120px,calc(100% - 32px));margin:auto;padding:18px 0 24px}.hero,.section{border-radius:26px;box-shadow:0 10px 28px #775b5220}.hero{display:grid;grid-template-columns:1fr auto;align-items:center;gap:22px;padding:22px 30px;background:linear-gradient(135deg,#ffffffee,#ffeee7ee);border:3px solid #fff}.tag{display:inline-block;margin:0 0 6px;padding:3px 11px;border-radius:999px;background:var(--lav);font-size:12px;font-weight:700;letter-spacing:.08em}h1{margin:0;color:var(--deep);font-size:clamp(27px,3.2vw,38px);line-height:1.18}.intro{margin:7px 0 0;font-size:16px}.bear{font-size:72px;text-align:center;filter:drop-shadow(0 7px 6px #775b5222)}.section{margin-top:16px;padding:22px 25px 25px;background:#ffffffdd}.section h2{margin:0;color:var(--deep);font-size:23px;text-align:center}.hint{text-align:center;margin:2px 0 15px;color:#9a7b72}.sites{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.site{display:flex;align-items:center;gap:12px;min-height:104px;padding:16px;border:2px solid #fde2e5;border-radius:20px;background:#fff7f5;color:var(--brown);text-decoration:none;box-shadow:0 6px 0 #efd3d8;transition:.18s}.site:nth-child(2){background:#f8f5ff;border-color:var(--lav);box-shadow:0 6px 0 #cec3e9}.site:hover{transform:translateY(2px);box-shadow:0 3px 0 #efd3d8}.icon{display:grid;place-items:center;flex:0 0 50px;height:50px;border-radius:16px;background:#fff;font-size:26px}.site strong{display:block;color:var(--deep);font-size:17px;line-height:1.35}.site small{display:block;margin-top:3px;font-size:13px;line-height:1.4}footer{text-align:center;margin-top:14px;color:#9a7b72;font-size:13px}@media(max-width:760px){.page{padding:12px 0 20px}.hero{grid-template-columns:1fr;padding:20px;text-align:center}.bear{display:none}.sites{grid-template-columns:1fr}.section{padding:20px 16px}.site{min-height:88px;padding:14px}}
+:root{--cream:#fffaf2;--ink:#654b43;--pink:#ffdfe8;--yellow:#fff0b8;--purple:#e8defd;--mint:#dff3e9}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:"Microsoft JhengHei",system-ui,sans-serif;background:radial-gradient(circle at 5% 10%,#ffdbe4 0 70px,transparent 72px),radial-gradient(circle at 94% 14%,#e6dcfa 0 90px,transparent 92px),radial-gradient(circle at 90% 92%,#dff3e9 0 75px,transparent 77px),var(--cream)}
+.page{width:min(1180px,calc(100% - 28px));margin:auto;padding:14px 0 20px}
+.hero,.lessons{position:relative;overflow:hidden;border:3px solid #fff;border-radius:28px;background:#ffffffdf;box-shadow:0 12px 30px #73584f1c}
+.hero{display:grid;grid-template-columns:1fr 190px;align-items:center;min-height:190px;padding:24px 34px;background:linear-gradient(135deg,#fff,#fff0ec)}
+.tag{display:inline-block;margin:0 0 5px;padding:4px 12px;border-radius:999px;background:var(--purple);font-size:12px;font-weight:900;letter-spacing:.08em}
+h1{margin:0;font-size:clamp(29px,4vw,43px);line-height:1.15;color:#5b4039}
+.intro{margin:8px 0 0;font-size:16px}
+.bear-art{width:160px;height:145px;filter:drop-shadow(0 8px 8px #73584f20);animation:float 3s ease-in-out infinite}
+.sparkle{position:absolute;font-size:24px;animation:twinkle 2s ease-in-out infinite}.s1{right:185px;top:20px}.s2{right:25px;bottom:16px;animation-delay:.7s}.flower{position:absolute;left:52%;bottom:13px;font-size:22px;transform:rotate(-12deg)}
+.lessons{margin-top:13px;padding:18px 22px 24px}
+.lessons h2{margin:0;text-align:center;font-size:23px;color:#5b4039}.hint{text-align:center;margin:1px 0 13px;color:#9b7e75;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.card{position:relative;display:flex;flex-direction:column;min-height:150px;padding:17px;border:2px solid #fff;border-radius:22px;color:var(--ink);text-decoration:none;box-shadow:0 6px 0 #e8cbd1;transition:.2s}
+.card:nth-child(1){background:#fff0d1}.card:nth-child(2){background:#eee8ff;box-shadow:0 6px 0 #cfc3eb}.card:nth-child(3){background:#ffe8ed}.card:nth-child(4){background:#e5f5ed;box-shadow:0 6px 0 #bedecd}
+.card:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 10px 18px #73584f1d}.card:hover .icon{transform:rotate(-8deg) scale(1.1)}
+.topline{display:flex;align-items:center;gap:11px}.icon{display:grid;place-items:center;flex:0 0 48px;height:48px;border-radius:15px;background:#fff;font-size:25px;transition:.2s}
+.card strong{font-size:17px;line-height:1.3;color:#5b4039}.card p{margin:10px 0 12px;font-size:13px;line-height:1.45;color:#8a7068}
+.go{margin-top:auto;align-self:flex-start;padding:4px 10px;border-radius:999px;background:#fff;font-size:12px;font-weight:900;color:#7257a8}
+footer{text-align:center;margin-top:10px;color:#a58a81;font-size:13px}
+@keyframes float{50%{transform:translateY(-7px) rotate(1deg)}}@keyframes twinkle{50%{transform:scale(.65);opacity:.45}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(max-width:850px){.hero{grid-template-columns:1fr 130px}.bear-art{width:125px}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.page{padding:9px 0 16px}.hero{grid-template-columns:1fr;padding:20px;text-align:center;min-height:auto}.bear-art,.sparkle,.flower{display:none}.lessons{padding:16px 14px 20px}.grid{grid-template-columns:1fr}.card{min-height:112px;padding:14px}.card p{margin:6px 0 8px}}
 </style>
 </head>
 <body><main class="page">
-<section class="hero"><div><p class="tag">WELCOME TO NANCY'S CLASS</p><h1>Nancy 老師的<br>單字練習小天地</h1><p class="intro">選一個練習網站，跟著小熊一起開心學英文吧！</p></div><div class="bear" role="img" aria-label="可愛小熊">🧸</div></section>
-<section class="section"><h2>🌟 單字練習網站</h2><p class="hint">點選想練習的教材，就可以開始囉！</p><div class="sites">
-<a class="site" href="300_words_complete.html"><span class="icon">🍯</span><span><strong>國小必備300單字</strong><small>P1～P56 單字聽讀與複習</small></span></a>
-<a class="site" href="https://snorlax2026.github.io/teaching/Grammar_Space_Kids_3_nancy.html"><span class="icon">🎧</span><span><strong>Grammar Space Kids 3</strong><small>課本單字發音練習</small></span></a>
-<a class="site" href="https://snorlax2026.github.io/teaching/word-puzzle/index.html"><span class="icon">🦁</span><span><strong>小學生必備 2000 單字</strong><small>看中文、聽發音、挑戰英文拼字</small></span></a>
-<a class="site" href="tuesday_english_class.html"><span class="icon">⚡</span><span><strong>Come On Everyone 2</strong><small>U1～U8 單字發音與拼字練習</small></span></a>
-</div></section><footer>Choose a lesson and have fun learning! ♡</footer>
+<section class="hero">
+  <div><p class="tag">WELCOME TO NANCY'S CLASS</p><h1>Nancy 老師的<br>單字練習小天地</h1><p class="intro">挑一個練習，跟著小熊開心學英文吧！</p></div>
+  <svg class="bear-art" viewBox="0 0 180 160" role="img" aria-label="可愛粉彩小熊">
+    <circle cx="43" cy="42" r="25" fill="#9c684b"/><circle cx="137" cy="42" r="25" fill="#9c684b"/>
+    <circle cx="43" cy="42" r="13" fill="#f1aa79"/><circle cx="137" cy="42" r="13" fill="#f1aa79"/>
+    <ellipse cx="90" cy="87" rx="62" ry="59" fill="#a97050"/>
+    <ellipse cx="90" cy="105" rx="34" ry="29" fill="#ffd6ad"/>
+    <circle cx="68" cy="77" r="6" fill="#3d2b28"/><circle cx="112" cy="77" r="6" fill="#3d2b28"/>
+    <circle cx="66" cy="75" r="2" fill="#fff"/><circle cx="110" cy="75" r="2" fill="#fff"/>
+    <path d="M82 94 Q90 88 98 94 Q96 103 90 103 Q84 103 82 94" fill="#55352f"/>
+    <path d="M90 103 Q90 115 78 114 M90 103 Q90 115 102 114" fill="none" stroke="#55352f" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="48" cy="99" rx="10" ry="6" fill="#ef9cae" opacity=".75"/><ellipse cx="132" cy="99" rx="10" ry="6" fill="#ef9cae" opacity=".75"/>
+    <path d="M58 25 Q90 5 122 25" fill="none" stroke="#f5c3d3" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="90" cy="13" r="10" fill="#f3abc3"/><circle cx="80" cy="16" r="8" fill="#ffd3df"/><circle cx="100" cy="16" r="8" fill="#ffd3df"/>
+  </svg>
+  <span class="sparkle s1">✨</span><span class="sparkle s2">⭐</span><span class="flower">🌸</span>
+</section>
+<section class="lessons"><h2>🌟 單字練習網站</h2><p class="hint">四個教材都在這一頁，點一下就開始！</p>
+<div class="grid">
+  <a class="card" href="300_words_complete.html"><span class="topline"><span class="icon">🍯</span><strong>國小必備300單字</strong></span><p>P1～P56 中英文單字聽讀與複習</p><span class="go">開始練習 →</span></a>
+  <a class="card" href="https://snorlax2026.github.io/teaching/Grammar_Space_Kids_3_nancy.html"><span class="topline"><span class="icon">🎧</span><strong>Grammar Space Kids 3</strong></span><p>課本單字發音練習</p><span class="go">開始練習 →</span></a>
+  <a class="card" href="https://snorlax2026.github.io/teaching/word-puzzle/index.html"><span class="topline"><span class="icon">🦁</span><strong>小學生必備 2000 單字</strong></span><p>看中文、聽發音、挑戰英文拼字</p><span class="go">開始練習 →</span></a>
+  <a class="card" href="tuesday_english_class.html"><span class="topline"><span class="icon">⚡</span><strong>Come On Everyone 2</strong></span><p>U1～U8 單字發音與拼字練習</p><span class="go">開始練習 →</span></a>
+</div></section>
+<footer>和 Nancy 老師一起開心學英文 ♡</footer>
 </main></body></html>
