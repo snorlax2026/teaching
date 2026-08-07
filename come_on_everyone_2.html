@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Come On Everyone 2｜Nancy 老師</title>
+<style>
+:root{--yellow:#ffdf4d;--yellow2:#fff3a7;--ink:#4f4741;--red:#ef6f71;--purple:#745bc4;--cream:#fffdf3}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:"Microsoft JhengHei",system-ui,sans-serif;background:radial-gradient(circle at 7% 10%,#fff1a8 0 70px,transparent 72px),radial-gradient(circle at 94% 14%,#e9e1ff 0 88px,transparent 90px),var(--cream)}
+.app{width:min(1050px,calc(100% - 24px));margin:auto;padding:12px 0 28px}
+.hero,.panel,.quiz{border:3px solid #fff;border-radius:26px;background:#ffffffea;box-shadow:0 11px 28px #6d554c1c}
+.hero{display:grid;grid-template-columns:1fr auto;align-items:center;padding:20px 26px;background:linear-gradient(135deg,#fff,#fff8cf)}
+.tag{display:inline-block;padding:4px 11px;border-radius:999px;background:#fff0a7;font-size:11px;font-weight:900}
+h1{margin:5px 0 2px;font-size:clamp(29px,4vw,43px)}.hero p{margin:3px 0;color:#8d8179}
+.mascot{font-size:72px}
+.nav{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin:13px 0 8px}
+.unit{padding:9px 3px;border:2px solid #eadfbc;border-radius:13px;background:#fff;color:#6e655e;font-weight:900;cursor:pointer}
+.unit.active{background:var(--yellow);border-color:#e4c637;color:#332d28}
+.toolbar{display:flex;gap:8px;margin-bottom:11px}
+.tool{flex:1;padding:11px;border:0;border-radius:14px;font:inherit;font-weight:900;cursor:pointer}
+.quizbtn{background:var(--purple);color:#fff}.answerbtn{background:#333;color:#fff}
+.panel,.quiz{padding:18px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.head h2{margin:0;font-size:21px}
+.badge{padding:6px 11px;border-radius:999px;background:var(--yellow2);font-weight:900}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.card{position:relative;min-height:115px;border:2px solid #f0e8d4;border-radius:18px;background:#fffdf7;padding:14px;text-align:center;cursor:pointer}
+.card:nth-child(3n+2){background:#f7f3ff;border-color:#e8e0f6}.card:nth-child(3n){background:#fff1f2;border-color:#f4d9dd}
+.zh{font-size:23px;font-weight:950}.mix{margin:7px 0 4px;padding:3px 7px;border-radius:7px;background:#fff3cf;font:800 15px monospace;letter-spacing:1px}
+.en{font-size:15px;font-weight:950;color:var(--red);visibility:hidden}body.show .en{visibility:visible}
+.sound{position:absolute;right:10px;top:9px;opacity:.55}
+.quiz{display:none;margin-top:12px;text-align:center}.quiz.open{display:block}
+.clue{margin:15px 0 5px;font-size:clamp(34px,6vw,50px);font-weight:950}
+.answer{min-height:70px;margin:14px 0;padding:10px;border:3px dashed #d7caed;border-radius:18px;background:#faf7ff;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px}
+.answer.empty:after{content:'點選下方字母開始拼字';color:#aaa0b4;font-weight:700}
+.letters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:14px 0}
+.letter,.chosen{min-width:47px;height:50px;padding:0 10px;border:2px solid var(--purple);border-radius:12px;background:#fff;color:#60449d;font-size:22px;font-weight:950;cursor:pointer;box-shadow:0 4px 0 #d6caeb}
+.letter:disabled{opacity:.2}.chosen{background:#f2edff}
+.feedback{min-height:28px;margin:8px;font-size:18px;font-weight:900}
+.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}.action{padding:10px 14px;border:0;border-radius:12px;background:#eee8f7;color:#5f4b75;font:inherit;font-weight:900;cursor:pointer}.primary{background:var(--purple);color:#fff}.listen{background:#e1f4ff;color:#337a9d}
+.home{display:inline-block;margin-top:13px;color:#7257a8;font-weight:900;text-decoration:none}
+@media(max-width:760px){.nav{grid-template-columns:repeat(4,1fr)}.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.mascot{display:none}.hero{padding:17px}.toolbar{flex-direction:column}.panel,.quiz{padding:14px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="hero"><div><span class="tag">NANCY'S VOCABULARY GARDEN</span><h1>Come On Everyone 2</h1><p>U1～U8｜單字發音、亂序提示、重組拼字練習</p></div><div class="mascot">⚡</div></header>
+<nav class="nav" id="nav"></nav>
+<div class="toolbar"><button class="tool answerbtn" id="answerBtn">顯示答案</button><button class="tool quizbtn" id="quizBtn">🧩 開始本單元重組單字練習</button></div>
+<section class="panel"><div class="head"><h2 id="title"></h2><span class="badge">每回 6 個單字</span></div><div class="cards" id="cards"></div></section>
+<section class="quiz" id="quiz"><div class="head"><h2>🧩 重組單字練習</h2><span class="badge" id="progress"></span></div><div class="clue" id="clue"></div><button class="action listen" id="hear">🔊 聽發音</button><div class="answer empty" id="answer"></div><div class="letters" id="letters"></div><div class="feedback" id="feedback"></div><div class="actions"><button class="action" id="undo">↩ 撤回</button><button class="action" id="remix">🔀 重新排列</button><button class="action primary" id="check">✓ 檢查答案</button><button class="action" id="next">下一題 →</button><button class="action" id="close">關閉練習</button></div></section>
+<a class="home" href="index.html">🏠 回到單字練習首頁</a>
+</main>
+<script>
+const data={'1-1':{title:'U1 Fun and Play｜Beach',words:[{en:'swim tube',zh:'游泳圈'},{en:'water gun',zh:'水槍'},{en:'boat',zh:'小船'},{en:'beach ball',zh:'海灘球'},{en:'life vest',zh:'救生衣'},{en:'sand bucket',zh:'沙桶'}]},
+'1-2':{title:'U1 Fun and Play｜Toys',words:[{en:'glove',zh:'手套'},{en:'bat',zh:'球棒'},{en:'soccer ball',zh:'足球'},{en:'skateboard',zh:'滑板'},{en:'scooter',zh:'滑板車'},{en:'yo-yo',zh:'溜溜球'}]},
+'2-1':{title:'U2 At School｜Supplies',words:[{en:'marker',zh:'麥克筆'},{en:'stapler',zh:'釘書機'},{en:'paintbrush',zh:'水彩筆'},{en:'glue stick',zh:'口紅膠'},{en:'colored pencil',zh:'彩色鉛筆'},{en:'pencil sharpener',zh:'削鉛筆機'}]},
+'2-2':{title:'U2 At School｜Food',words:[{en:'pizza',zh:'披薩'},{en:'fish',zh:'魚'},{en:'chicken',zh:'雞肉'},{en:'steak',zh:'牛排'},{en:'soup',zh:'湯'},{en:'juice',zh:'果汁'}]},
+'3-1':{title:'U3 Animals｜Farm',words:[{en:'duck',zh:'鴨子'},{en:'horse',zh:'馬'},{en:'turkey',zh:'火雞'},{en:'cow',zh:'乳牛'},{en:'goat',zh:'山羊'},{en:'rabbit',zh:'兔子'}]},
+'3-2':{title:'U3 Animals｜Zoo',words:[{en:'skunk',zh:'臭鼬'},{en:'cheetah',zh:'獵豹'},{en:'snake',zh:'蛇'},{en:'owl',zh:'貓頭鷹'},{en:'peacock',zh:'孔雀'},{en:'fox',zh:'狐狸'}]},
+'4-1':{title:'U4 Around Town｜Jobs 1',words:[{en:'doctor',zh:'醫生'},{en:'cook',zh:'廚師'},{en:'teacher',zh:'老師'},{en:'nurse',zh:'護理師'},{en:'bus driver',zh:'公車司機'},{en:'student',zh:'學生'}]},
+'4-2':{title:'U4 Around Town｜Jobs 2',words:[{en:'singers',zh:'歌手'},{en:'dancers',zh:'舞者'},{en:'farmers',zh:'農夫'},{en:'vets',zh:'獸醫'},{en:'firefighters',zh:'消防員'},{en:'police officers',zh:'警官'}]},
+'5-1':{title:'U5 Routines｜Time',words:[{en:'one o\'clock',zh:'一點'},{en:'one ten',zh:'一點十分'},{en:'one fifteen',zh:'一點十五分'},{en:'one thirty',zh:'一點半'},{en:'one forty-five',zh:'一點四十五分'},{en:'two o\'clock',zh:'兩點'}]},
+'5-2':{title:'U5 Routines｜Daily',words:[{en:'get up',zh:'起床'},{en:'eat breakfast',zh:'吃早餐'},{en:'go to school',zh:'去上學'},{en:'eat lunch',zh:'吃午餐'},{en:'eat dinner',zh:'吃晚餐'},{en:'go to bed',zh:'睡覺'}]},
+'6-1':{title:'U6 Music and Sports｜Music',words:[{en:'guitar',zh:'吉他'},{en:'flute',zh:'長笛'},{en:'violin',zh:'小提琴'},{en:'cello',zh:'大提琴'},{en:'piano',zh:'鋼琴'},{en:'drums',zh:'鼓'}]},
+'6-2':{title:'U6 Music and Sports｜Sports',words:[{en:'soccer',zh:'足球'},{en:'baseball',zh:'棒球'},{en:'basketball',zh:'籃球'},{en:'badminton',zh:'羽毛球'},{en:'volleyball',zh:'排球'},{en:'table tennis',zh:'桌球'}]},
+'7-1':{title:'U7 Things to Do｜Actions 1',words:[{en:'study',zh:'讀書'},{en:'draw',zh:'畫畫'},{en:'talk',zh:'說話'},{en:'drink',zh:'喝'},{en:'eat',zh:'吃'},{en:'write',zh:'寫字'}]},
+'7-2':{title:'U7 Things to Do｜Actions 2',words:[{en:'dance',zh:'跳舞'},{en:'sing',zh:'唱歌'},{en:'jump',zh:'跳'},{en:'walk',zh:'走'},{en:'laugh',zh:'笑'},{en:'run',zh:'跑'}]},
+'8-1':{title:'U8 At Home｜Home',words:[{en:'lamp',zh:'檯燈'},{en:'mirror',zh:'鏡子'},{en:'bookcase',zh:'書櫃'},{en:'bed',zh:'床'},{en:'dresser',zh:'梳妝台'},{en:'sofa',zh:'沙發'}]},
+'8-2':{title:'U8 At Home｜Rooms',words:[{en:'bedroom',zh:'臥室'},{en:'kitchen',zh:'廚房'},{en:'living room',zh:'客廳'},{en:'bathroom',zh:'浴室'},{en:'attic',zh:'閣樓'},{en:'garage',zh:'車庫'}]}};
+let current='1-1',quizWords=[],q=0,tiles=[],chosen=[];
+const nav=document.querySelector('#nav'),cards=document.querySelector('#cards'),title=document.querySelector('#title'),quiz=document.querySelector('#quiz'),clue=document.querySelector('#clue'),answer=document.querySelector('#answer'),letters=document.querySelector('#letters'),feedback=document.querySelector('#feedback'),progress=document.querySelector('#progress');
+
+function speak(text){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.8;speechSynthesis.speak(u)}
+function shuffle(a){for(let i=a.length-1;i;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function scramble(word){return word.split(' ').map(part=>{let a=[...part];if(a.length>1){let original=a.join('');let tries=0;do{shuffle(a);tries++}while(a.join('')===original&&tries<8)}return a.join('')}).join(' ')}
+const norm=s=>s.toLowerCase().replace(/[^a-z]/g,'');
+
+Object.keys(data).forEach(key=>{const b=document.createElement('button');b.className='unit';b.textContent=key;b.id='u'+key;b.onclick=()=>show(key);nav.appendChild(b)});
+function show(key){current=key;document.querySelectorAll('.unit').forEach(b=>b.classList.toggle('active',b.id==='u'+key));title.textContent=data[key].title;cards.innerHTML='';data[key].words.forEach((w,i)=>{const c=document.createElement('button');c.className='card';c.innerHTML=`<span class="sound">🔊</span><div class="zh">${w.zh}</div><div class="mix">${scramble(w.en)}</div><div class="en">${w.en}</div>`;c.onclick=()=>speak(w.en);cards.appendChild(c)})}
+document.querySelector('#answerBtn').onclick=()=>{document.body.classList.toggle('show');document.querySelector('#answerBtn').textContent=document.body.classList.contains('show')?'隱藏答案':'顯示答案'};
+
+function setup(){const w=quizWords[q];chosen=[];tiles=shuffle([...norm(w.en)].map((char,id)=>({char,id,used:false})));clue.textContent=w.zh;progress.textContent=`第 ${q+1} 題 / 共 ${quizWords.length} 題`;feedback.textContent='';draw();speak(w.en)}
+function draw(){answer.innerHTML='';answer.classList.toggle('empty',!chosen.length);chosen.forEach(t=>{const b=document.createElement('button');b.className='chosen';b.textContent=t.char;b.onclick=()=>remove(t);answer.appendChild(b)});letters.innerHTML='';tiles.forEach(t=>{const b=document.createElement('button');b.className='letter';b.textContent=t.char;b.disabled=t.used;b.onclick=()=>{t.used=true;chosen.push(t);feedback.textContent='';draw()};letters.appendChild(b)})}
+function remove(t){t.used=false;chosen=chosen.filter(x=>x!==t);feedback.textContent='';draw()}
+function next(){q=(q+1)%quizWords.length;setup()}
+document.querySelector('#quizBtn').onclick=()=>{quizWords=shuffle([...data[current].words]);q=0;quiz.classList.add('open');setup();quiz.scrollIntoView({behavior:'smooth'})};
+document.querySelector('#hear').onclick=()=>speak(quizWords[q].en);
+document.querySelector('#undo').onclick=()=>chosen.length&&remove(chosen[chosen.length-1]);
+document.querySelector('#remix').onclick=()=>{chosen.forEach(t=>t.used=false);chosen=[];shuffle(tiles);feedback.textContent='';draw()};
+document.querySelector('#check').onclick=()=>{const right=norm(quizWords[q].en),got=chosen.map(t=>t.char).join('');if(got===right){feedback.textContent=`🎉 答對了！${quizWords[q].en}`;feedback.style.color='#37815c';speak(quizWords[q].en)}else{feedback.textContent=got.length<right.length?'還有字母沒選完喔！':'再試一次，你快答對了！';feedback.style.color='#c45d75'}};
+document.querySelector('#next').onclick=next;document.querySelector('#close').onclick=()=>{quiz.classList.remove('open');speechSynthesis.cancel()};
+show('1-1');
+</script>
+</body></html>
