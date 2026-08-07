@@ -89,7 +89,7 @@
 * 第 2 次測驗 (9字)：gold (黃金)、handkerchief (手帕)、hat (帽子)、mask (面具)、necklace (項鍊)、purse (女用皮包)、ring (戒指)、scarf (圍巾)、shoe (鞋子) 10。
 * 第 3 次測驗 (8字)：silver (銀)、slipper (室內拖鞋)、sneakers (球鞋)、sock (襪子)、sunglasses (太陽眼鏡)、tie (領帶)、umbrella (雨傘)、wallet (皮夾) 10。
 🎨 23 Colors 顏色 (共 16 字)
-* 第 1 次測驗 (8字)：black (黑色、黑色的)、blue (藍色、藍色的)、brown (棕色、棕色的)、golden (金色的)、gray (灰色、灰色的)、green (綠色、綠色的)、mustard (芥末黃色、芥末黃的)、navy blue (深藍色、深藍色的) 10。
+* 第 1 次測驗 (8字)：black (黑色)、blue (藍色)、brown (棕色)、golden (金色)、gray (灰色)、green (綠色)、mustard (芥末黃色)、navy blue (深藍色) 10。
 * 第 2 次測驗 (8字)：olive (橄欖綠色、橄欖綠的)、orange (橘色、橘色的)、pink (粉紅色、粉紅色的)、purple (紫色、紫色的)、red (紅色、紅色的)、sky blue (天藍色、天藍色的)、white (白色、白色的)、yellow (黃色、黃色的) 10。
 ⚽ 24 Sports & Exercise 運動 (共 30 字)
 * 第 1 次測驗 (10字)：badminton (羽球)、baseball (棒球)、basketball (籃球)、bowling (保齡球)、cheerleader (啦啦隊員)、dodge ball (躲避球)、fan (狂熱愛好者、粉絲)、football (美式足球)、frisbee (飛盤)、golf (高爾夫球) 11。
