@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spotlight Reading 1｜Nancy 老師</title>
+<style>
+:root{--ink:#5d4740;--purple:#745bc4;--yellow:#fff0b8;--pink:#ffe4ec;--mint:#e7f6ee}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:"Microsoft JhengHei",system-ui,sans-serif;
+background:radial-gradient(circle at 5% 9%,#ffdbe5 0 72px,transparent 74px),
+radial-gradient(circle at 95% 12%,#e4dcfa 0 90px,transparent 92px),#fffaf2}
+.app{width:min(1080px,calc(100% - 26px));margin:auto;padding:13px 0 30px}
+.top{display:grid;grid-template-columns:1fr auto;align-items:center;padding:18px 26px;border:3px solid #fff;border-radius:27px;
+background:linear-gradient(135deg,#fff,#fff0ec);box-shadow:0 11px 28px #6d554c1c}
+.tag{display:inline-block;padding:3px 11px;border-radius:999px;background:#e8defd;font-size:11px;font-weight:900}
+.top h1{margin:5px 0 2px;font-size:clamp(29px,4vw,43px)}.top p{margin:3px 0;color:#947970}
+.mascot{font-size:72px;animation:float 3s ease-in-out infinite}
+.units{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin:13px 0}
+.unit{padding:10px 4px;border:2px solid #e8ddef;border-radius:13px;background:#fff;color:#765f57;font-weight:900;cursor:pointer}
+.unit:hover,.unit.active{background:var(--purple);border-color:var(--purple);color:#fff}
+.launch{width:100%;margin-bottom:11px;padding:11px;border:0;border-radius:14px;background:var(--purple);color:#fff;font:inherit;font-weight:900;cursor:pointer}
+.panel,.quiz{padding:19px;border:3px solid #fff;border-radius:27px;background:#ffffffdf;box-shadow:0 11px 28px #6d554c1c}
+.head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.head h2{margin:0;font-size:22px}
+.badge{padding:6px 11px;border-radius:999px;background:var(--yellow);font-weight:900}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.card{position:relative;min-height:92px;padding:14px 37px 12px 14px;border:2px solid #f0dce2;border-radius:18px;background:#fff4f6;text-align:left;color:var(--ink);cursor:pointer}
+.card:nth-child(3n+2){background:#f5f1ff;border-color:#e1d8f3}.card:nth-child(3n){background:#f0faf5;border-color:#d6ecdf}
+.en{display:block;font-size:18px;font-weight:950}.zh{display:block;margin-top:6px;color:#92766d}.sound{position:absolute;right:11px;top:11px}
+.quiz{display:none;margin-top:12px;text-align:center}.quiz.open{display:block}
+.clue{margin:18px 0 5px;font-size:clamp(30px,5vw,45px);font-weight:950}
+.answer{min-height:65px;margin:14px 0;padding:10px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;border:3px dashed #d7c8ed;border-radius:18px;background:#faf7ff}
+.answer.empty:after{content:'點選下方字母開始拼字';color:#ab9db5;font-weight:700}
+.letters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:14px 0}
+.letter,.chosen{min-width:48px;height:52px;padding:0 10px;border:2px solid var(--purple);border-radius:13px;background:#fff;color:#61449f;font-size:24px;font-weight:950;cursor:pointer;box-shadow:0 4px 0 #d6caeb}
+.letter:disabled{opacity:.18}.chosen{background:#f3edff}
+.feedback{min-height:30px;margin:8px;font-size:18px;font-weight:900}
+.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.action{padding:10px 16px;border:0;border-radius:13px;background:#eee8f7;color:#604b76;font:inherit;font-weight:900;cursor:pointer}
+.primary{background:var(--purple);color:#fff}.listen{background:#dff2ff;color:#33789b}
+.home{display:inline-block;margin-top:13px;color:#7359ac;font-weight:900;text-decoration:none}
+@keyframes float{50%{transform:translateY(-5px)}}
+@media(max-width:800px){.units{grid-template-columns:repeat(4,1fr)}.cards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.mascot{display:none}.top{padding:17px}.units{grid-template-columns:repeat(4,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.panel,.quiz{padding:14px}}
+@media(max-width:380px){.units{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top">
+<div><span class="tag">NANCY'S VOCABULARY GARDEN</span><h1>Spotlight Reading 1<br>單字樂園</h1>
+<p>Unit 1～16｜看中英文、聽發音、練習拼字</p></div>
+<div class="mascot">📚</div>
+</header>
+
+<nav class="units" id="units"></nav>
+<button class="launch" id="startQuiz">🧩 開始本單元重組單字練習</button>
+
+<section class="panel">
+<div class="head"><h2 id="title"></h2><span class="badge" id="count"></span></div>
+<div class="cards" id="cards"></div>
+</section>
+
+<section class="quiz" id="quiz">
+<div class="head"><h2>🧩 重組單字練習</h2><span class="badge" id="progress"></span></div>
+<div class="clue" id="clue"></div>
+<button class="action listen" id="hear">🔊 聽發音</button>
+<div class="answer empty" id="answer"></div>
+<div class="letters" id="letters"></div>
+<div class="feedback" id="feedback"></div>
+<div class="actions">
+<button class="action" id="undo">↩ 撤回</button>
+<button class="action" id="mix">🔀 重新排列</button>
+<button class="action primary" id="check">✓ 檢查答案</button>
+<button class="action" id="next">跳過／下一題 →</button>
+<button class="action" id="close">關閉練習</button>
+</div>
+</section>
+
+<a class="home" href="index.html">🏠 回到單字練習首頁</a>
+</main>
+
+<script>
+const units=[
+{title:'Unit 1',words:[['classmate','同班同學'],['cousin','堂 / 表兄弟姊妹'],['engineer','工程師'],['farmer','農夫'],['housewife','家庭主婦'],['kitten','小貓'],['nurse','護士'],['pet','寵物'],['police officer','警察'],['singer','歌手'],['class','班級'],['draw','畫']]},
+{title:'Unit 2',words:[['diligent','勤奮的'],['exciting','令人興奮的'],['feed','餵食'],['follow','聽從；跟隨'],['leave','留下；離開'],['line','隊伍'],['noise','噪音'],['rule','規定'],['ticket','門票'],['trash','垃圾'],['common','常見的'],['sign','標誌'],['warning','警告']]},
+{title:'Unit 3',words:[['attract','吸引'],['church','教堂'],['fall','秋天'],['famous','有名的'],['hot spring','溫泉'],['summer','夏天'],['temple','寺廟'],['vacation','假期'],['view','景色'],['visitor','觀光者'],['humid','潮濕的'],['natural','自然的'],['plan','計畫']]},
+{title:'Unit 4',words:[['become','成為'],['choose','選擇'],['different','不同的'],['goal','目標'],['improve','增進'],['join','參加'],['practice','練習'],['side','邊，側'],['skill','技術'],['sport','體育，運動'],['compete','競爭'],['information','資訊'],['match','比賽']]},
+{title:'Unit 5',words:[['campus','校園'],['chubby','圓胖的'],['concert','音樂會'],['expensive','昂貴的'],['fantastic','極好的'],['pop','流行的'],['shiny','閃亮的'],['silver','銀色的'],['simple','簡單的'],['sunglasses','太陽眼鏡'],['latest','最新的'],['live','現場直播的'],['normal','正常的']]},
+{title:'Unit 6',words:[['building','建築物'],['cage','籠子'],['gorilla','大猩猩'],['safe','安全的'],['scared','害怕的'],['shout','喊叫'],['traffic','交通'],['wander','遊蕩'],['worried','擔心的'],['zookeeper','動物園管理員'],['cave','洞穴'],['nest','巢'],['schedule','時程表']]},
+{title:'Unit 7',words:[['drive','開車送；駕駛'],['exercise','運動'],['finish','結束；完成'],['fresh','新鮮的'],['healthy','健康的'],['important','重要的'],['meal','一餐'],['ordinary','平凡的'],['pancake','鬆餅'],['teeth','牙齒'],['report','報告'],['swimsuit','游泳衣'],['tight','緊湊的']]},
+{title:'Unit 8',words:[['beef','牛肉'],['broccoli','綠花椰菜'],['cafeteria','自助餐廳'],['chef','主廚'],['delicious','美味的'],['nutritious','有營養的'],['soup','湯'],['spaghetti','義大利麵'],['stuffed','吃飽的'],['vegetable','蔬菜'],['offer','提供'],['own','擁有'],['special','特別的']]},
+{title:'Unit 9',words:[['active','活潑的；積極的'],['activity','活動'],['attention','注意'],['band','樂團'],['forget','忘記'],['goal','目標'],['guitar','吉他'],['hard-working','勤勉的'],['however','然而'],['outdoor','戶外的'],['depend','依靠'],['frequency','頻率'],['mark','作記號']]},
+{title:'Unit 10',words:[['animal','動物'],['fan','迷，愛好者'],['fur','軟毛'],['golden','金黃色的'],['land','陸地'],['puppy','幼犬'],['sight','看見；視力'],['soft','柔軟的'],['turtle','烏龜'],['energetic','精力旺盛的'],['need','需求']]},
+{title:'Unit 11',words:[['cape','斗篷；披肩'],['costume','服裝'],['fall over','跌倒'],['invite','邀請'],['pair','一雙，一對'],['pajamas','睡衣褲'],['polka-dot','圓點花樣的'],['puffy','膨起，非常寬鬆的'],['thrilled','非常興奮的'],['wing','翅膀'],['decoration','裝飾品'],['deliver','運送'],['surprise','驚喜']]},
+{title:'Unit 12',words:[['ache','疼痛'],['asleep','睡著的'],['cough','咳嗽'],['fever','發燒'],['forest','森林'],['grab','抓住'],['medicine','藥'],['monster','怪物'],['sore','痠痛發炎的'],['sweat','流汗'],['diary','日記'],['giant','巨人'],['show','給...看']]},
+{title:'Unit 13',words:[['application','應用程式'],['attraction','景點'],['hotel','旅館'],['mountain','山'],['museum','博物館'],['noodle','麵條'],['route','路線'],['shrimp','蝦'],['snack','小吃'],['tourist','觀光客'],['cost','費用'],['example','例子'],['transportation','交通工具']]},
+{title:'Unit 14',words:[['cart','推車'],['dairy','奶製品的'],['dumpling','餃子'],['frozen','冷凍的'],['goods','商品'],['grocery','食品雜貨的'],['item','項目'],['lettuce','萵苣'],['section','部分'],['total','總計'],['loaf','一條'],['pineapple','鳳梨']]},
+{title:'Unit 15',words:[['both','兩者（都）'],['heavy','重的'],['jeans','牛仔褲'],['lose','減輕；丟失'],['model','模特兒'],['scarf','圍巾'],['share','共有；分享'],['sharp','尖的；鋒利的'],['slim','苗條的'],['therefore','因此'],['height','身高；高度'],['light','淡的'],['weight','體重；重量']]},
+{title:'Unit 16',words:[['afraid','害怕的'],['hurt','弄傷'],['peaceful','平靜的'],['popular','受歡迎的'],['responsibility','責任'],['roommate','室友'],['sense','感覺'],['snake','蛇'],['still','仍然'],['take care of','照顧'],['friendliness','親切'],['personality','個性'],['playfulness','好玩']]}
+];
+
+let current=0,quizWords=[],q=0,tiles=[],chosen=[];
+const nav=document.querySelector('#units'),cards=document.querySelector('#cards'),
+title=document.querySelector('#title'),count=document.querySelector('#count'),
+quiz=document.querySelector('#quiz'),clue=document.querySelector('#clue'),
+answer=document.querySelector('#answer'),letters=document.querySelector('#letters'),
+feedback=document.querySelector('#feedback'),progress=document.querySelector('#progress');
+
+function speak(word){
+  if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(word);
+  u.lang='en-US';u.rate=.78;u.pitch=1.1;
+  speechSynthesis.speak(u);
+}
+function shuffle(a){for(let i=a.length-1;i;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const norm=s=>s.toLowerCase().replace(/[^a-z]/g,'');
+
+units.forEach((u,i)=>{
+  const b=document.createElement('button');
+  b.className='unit'+(i?'':' active');
+  b.textContent=`Unit ${i+1}`;
+  b.onclick=()=>show(i);
+  nav.appendChild(b);
+});
+
+function show(i){
+  current=i;
+  document.querySelectorAll('.unit').forEach((b,n)=>b.classList.toggle('active',n===i));
+  title.textContent=`Unit ${i+1}`;
+  count.textContent=`${units[i].words.length} 個單字`;
+  cards.innerHTML='';
+  units[i].words.forEach(w=>{
+    const b=document.createElement('button');
+    b.className='card';
+    b.innerHTML=`<span class="sound">🔊</span><span class="en">${w[0]}</span><span class="zh">${w[1]}</span>`;
+    b.onclick=()=>speak(w[0]);
+    cards.appendChild(b);
+  });
+}
+
+function setup(){
+  const w=quizWords[q];
+  chosen=[];
+  tiles=shuffle([...norm(w[0])].map((char,id)=>({char,id,used:false})));
+  clue.textContent=w[1];
+  progress.textContent=`第 ${q+1} 題／共 ${quizWords.length} 題`;
+  feedback.textContent='';
+  draw();
+  speak(w[0]);
+}
+
+function draw(){
+  answer.innerHTML='';
+  answer.classList.toggle('empty',!chosen.length);
+  chosen.forEach(t=>{
+    const b=document.createElement('button');
+    b.className='chosen';b.textContent=t.char;b.onclick=()=>remove(t);
+    answer.appendChild(b);
+  });
+  letters.innerHTML='';
+  tiles.forEach(t=>{
+    const b=document.createElement('button');
+    b.className='letter';b.textContent=t.char;b.disabled=t.used;
+    b.onclick=()=>{t.used=true;chosen.push(t);feedback.textContent='';draw()};
+    letters.appendChild(b);
+  });
+}
+function remove(t){t.used=false;chosen=chosen.filter(x=>x!==t);feedback.textContent='';draw()}
+function next(){q=(q+1)%quizWords.length;setup()}
+
+document.querySelector('#startQuiz').onclick=()=>{
+  quizWords=shuffle([...units[current].words]);q=0;quiz.classList.add('open');setup();
+  quiz.scrollIntoView({behavior:'smooth'});
+};
+document.querySelector('#hear').onclick=()=>speak(quizWords[q][0]);
+document.querySelector('#undo').onclick=()=>chosen.length&&remove(chosen[chosen.length-1]);
+document.querySelector('#mix').onclick=()=>{chosen.forEach(t=>t.used=false);chosen=[];shuffle(tiles);feedback.textContent='';draw()};
+document.querySelector('#check').onclick=()=>{
+  const right=norm(quizWords[q][0]),got=chosen.map(t=>t.char).join('');
+  if(got===right){
+    feedback.textContent=`🎉 答對了！${quizWords[q][0]}`;
+    feedback.style.color='#39835c';speak(quizWords[q][0]);
+  }else{
+    feedback.textContent=got.length<right.length?'還有字母沒選完喔！':'再試一次，你快答對了！';
+    feedback.style.color='#c45d75';
+  }
+};
+document.querySelector('#next').onclick=next;
+document.querySelector('#close').onclick=()=>{quiz.classList.remove('open');speechSynthesis.cancel()};
+show(0);
+</script>
+</body>
+</html>
